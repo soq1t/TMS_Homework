@@ -30,7 +30,7 @@ namespace Homework4
         {
             _array = array;
             _x = _array.GetLength(0);
-            _y = _array.GetLength(1);
+            _y = _array[0].Length;
         }
 
         private static Dictionary<AmountMode, string> _amountMap = new Dictionary<
@@ -48,14 +48,14 @@ namespace Homework4
             { SortMode.Descending, "убыванию" },
         };
 
-        public void PrintMatrix()
+        public void Print()
         {
             for (int i = 0; i < _x; i++)
             for (int j = 0; j < _y; j++)
             {
                 Console.Write(_array[i][j]);
                 if (j + 1 < _y)
-                    Console.Write("\t\n");
+                    Console.Write("\t");
                 else
                     Console.Write("\n");
             }
@@ -85,15 +85,15 @@ namespace Homework4
                 int[] buffer = (int[])_array[i].Clone();
 
                 for (int j = 0; j < _y; j++)
-                    _array[i][j] = buffer[-_y - 1 - j];
+                    _array[i][j] = buffer[_y - 1 - j];
             }
         }
 
         public void PrintInverted()
         {
             Invert();
-            Console.WriteLine("Инвертированная матрица:\n");
-            PrintMatrix();
+            Console.WriteLine("Инвертированная матрица:");
+            Print();
         }
 
         private void Sort(SortMode mode)
@@ -124,8 +124,8 @@ namespace Homework4
         public void PrintSorted(SortMode mode)
         {
             Sort(mode);
-            Console.WriteLine($"Отсортированная по {_sortMap[mode]} матрица:\n");
-            PrintMatrix();
+            Console.WriteLine($"Отсортированная по {_sortMap[mode]} матрица:");
+            Print();
         }
     }
 }
