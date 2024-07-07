@@ -18,8 +18,8 @@ namespace Homework5
         public Stringer(string DataStr, ActionSelector ExitActions)
         {
             _data = DataStr;
-            string noSigns = GetNoSignsString(DataStr);
 
+            string noSigns = GetNoSignsString(DataStr);
             _words = noSigns.Split(" ").ToList();
 
             _exitActions = ExitActions;
@@ -34,6 +34,10 @@ namespace Homework5
                 StringSorting
             );
             StringActions.AddAction("Предложения без запятых", NoCommaSentences);
+            StringActions.AddAction(
+                "Слова, которые начинаются и кончаются на одинаковую букву",
+                SameStartsEnds
+            );
 
             StringActions.AddAction("Изменить строку / выйти из программы", ChangeData, true);
         }
@@ -280,6 +284,37 @@ namespace Homework5
             CancelAction();
         }
 
+        #endregion
+
+        #region Слова, начинающиеся и оканчивающиеся на одну и ту же букву
+        private void SameStartsEnds(object obj)
+        {
+            List<string> sameList = new List<string>();
+
+            foreach (string word in _words)
+            {
+                string lower = word.ToLower();
+
+                if (lower.First() == lower.Last())
+                    sameList.Add(word);
+            }
+
+            if (sameList.Count == 0)
+                Console.WriteLine(
+                    "В строке нет слов, начинающихся и оканчивающихся на одну и ту же букву\nP.S. русская и английская \'с\' и т.п. не считаются за одну и ту же букву, Степан)"
+                );
+            else
+            {
+                Console.WriteLine(
+                    $"В данной строке есть {sameList.Count} слов, которые начинаюстя и кончаются на одну и ту же букву:"
+                );
+                foreach (string word in sameList)
+                {
+                    Console.WriteLine($"Буква '{word[0].ToString().ToUpper()}' - {word}");
+                }
+            }
+            CancelAction();
+        }
         #endregion
         public void PerformStringAction(Action<object> action)
         {
