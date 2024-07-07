@@ -9,7 +9,7 @@
             _actions = new Dictionary<KeyValuePair<ConsoleKey, string>, Action<object>>();
         }
 
-        public Action<object> SelectAction()
+        public Action<object> SelectAction(string? initMessage = null)
         {
             if (_actions.Count == 0)
             {
@@ -18,6 +18,9 @@
             }
 
             Console.Clear();
+            if (initMessage != null)
+                Console.WriteLine(initMessage + "\n");
+
             Console.WriteLine("Выберите действие:");
 
             foreach (var item in _actions)
