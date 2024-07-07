@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HomeworkToolkit;
+using MyHomeworkToolkit;
 
 namespace Homework5
 {
@@ -20,23 +20,6 @@ namespace Homework5
             actions.SelectAction().Invoke(Directory.GetCurrentDirectory() + "\\input");
 
             return _result;
-
-            //Console.Clear();
-            //Console.WriteLine("Выберите режим работы:");
-            //Console.WriteLine("1 - ввести строку в консоль");
-            //Console.WriteLine("2 - прочитать строку из текстового файла");
-
-            //while (true)
-            //{
-            //    ConsoleKey key = Console.ReadKey(true).Key;
-            //    switch (key)
-            //    {
-            //        case ConsoleKey.D1:
-            //            result = FromConsole();
-            //        case ConsoleKey.D2:
-            //            return FromFile(Directory.GetCurrentDirectory());
-            //    }
-            //}
         }
 
         private static void FromConsole(object obj = null)

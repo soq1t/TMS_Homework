@@ -38,8 +38,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="HomeworkToolkit">
-      <HintPath>..\HomeworkToolkit\bin\Release\net8.0\HomeworkToolkit.dll</HintPath>
+    <Reference Include="MyHomeworkToolkit">
+      <HintPath>..\MyHomeworkToolkit\bin\Release\net8.0\MyHomeworkToolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
 
