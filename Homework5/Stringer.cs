@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using HomeworkToolkit;
@@ -29,9 +30,10 @@ namespace Homework5
             StringActions.AddAction("Саммое длинное слово", TheLongestWord);
             StringActions.AddAction("Замена цифр на слова", DigitsReplacer);
             StringActions.AddAction(
-                "Сортировка предложений (безэмоциональные -> восклицательные -> вопросительные",
+                "Сортировка предложений (безэмоциональные -> восклицательные -> вопросительные)",
                 StringSorting
             );
+            StringActions.AddAction("Предложения без запятых", NoCommaSentences);
 
             StringActions.AddAction("Изменить строку / выйти из программы", ChangeData, true);
         }
@@ -214,36 +216,17 @@ namespace Homework5
         {
             List<string> exclamations = new List<string>();
             List<string> interrogations = new List<string>();
-            List<StringBuilder> commons = new List<StringBuilder>();
+            List<string> commons = new List<string>();
 
-            StringBuilder currentSentence = new StringBuilder();
-
-            foreach (char c in _data)
+            List<string> sentences = SeparateSentences(_data);
+            foreach (string s in sentences)
             {
-                if (c == '.' && commons.Count > 0)
-                {
-                    commons.Last().Append(c);
-                }
+                if (s.EndsWith('?'))
+                    interrogations.Add(s);
+                else if (s.EndsWith('!'))
+                    exclamations.Add(s);
                 else
-                {
-                    currentSentence.Append(c);
-
-                    switch (c)
-                    {
-                        case '.':
-                            commons.Add(new StringBuilder(currentSentence.ToString()));
-                            currentSentence.Clear();
-                            break;
-                        case '!':
-                            exclamations.Add(currentSentence.ToString());
-                            currentSentence.Clear();
-                            break;
-                        case '?':
-                            interrogations.Add(currentSentence.ToString());
-                            currentSentence.Clear();
-                            break;
-                    }
-                }
+                    commons.Add(s);
             }
 
             if (commons.Count == 0)
@@ -251,7 +234,7 @@ namespace Homework5
             else
             {
                 Console.WriteLine($"Безэмоциональные предложения ({commons.Count} шт):");
-                commons.ForEach(s => Console.WriteLine(s.ToString().Trim()));
+                commons.ForEach(Console.WriteLine);
             }
 
             Console.WriteLine();
@@ -261,7 +244,7 @@ namespace Homework5
             else
             {
                 Console.WriteLine($"Восклицательные предложения ({exclamations.Count} шт):");
-                exclamations.ForEach(s => Console.WriteLine(s.Trim()));
+                exclamations.ForEach(Console.WriteLine);
             }
 
             Console.WriteLine();
@@ -271,7 +254,7 @@ namespace Homework5
             else
             {
                 Console.WriteLine($"Вопросительные предложения ({interrogations.Count} шт):");
-                interrogations.ForEach(s => Console.WriteLine(s.Trim()));
+                interrogations.ForEach(Console.WriteLine);
             }
 
             CancelAction();
@@ -279,6 +262,25 @@ namespace Homework5
 
         #endregion
 
+        #region Предложения без запятых
+        private void NoCommaSentences(object obj)
+        {
+            List<string> sentences = SeparateSentences(_data);
+
+            List<string> noCommaSentences = sentences.Where(s => !s.Contains(',')).ToList();
+
+            if (noCommaSentences.Count == 0)
+                Console.WriteLine("В данной строке во всех предложениях есть запятые!");
+            else
+            {
+                Console.WriteLine($"Предложения без запятых ({noCommaSentences.Count} шт):");
+                noCommaSentences.ForEach(Console.WriteLine);
+            }
+
+            CancelAction();
+        }
+
+        #endregion
         public void PerformStringAction(Action<object> action)
         {
             Console.Clear();
@@ -310,6 +312,40 @@ namespace Homework5
             noSignsStr = noSignsStr.Replace(")", string.Empty);
             noSignsStr = noSignsStr.Replace("(", string.Empty);
             return noSignsStr;
+        }
+
+        private List<string> SeparateSentences(string input)
+        {
+            List<StringBuilder> sentencesSb = new List<StringBuilder>();
+            List<string> sentences = new List<string>();
+
+            StringBuilder currentString = new StringBuilder();
+
+            foreach (char c in input)
+            {
+                if (c == '.' && currentString.Length == 0 && sentencesSb.Count > 0)
+                    sentencesSb.Last().Append(c);
+                else
+                {
+                    currentString.Append(c);
+
+                    if (c == '.' || c == '!' || c == '?')
+                    {
+                        sentencesSb.Add(new StringBuilder(currentString.ToString()));
+                        currentString.Clear();
+                    }
+                }
+            }
+
+            foreach (StringBuilder SbString in sentencesSb)
+            {
+                if (SbString.ToString().First() == ' ')
+                    SbString.Remove(0, 1);
+
+                sentences.Add(SbString.ToString());
+            }
+
+            return sentences;
         }
     }
 }

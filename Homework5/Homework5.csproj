@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <None Remove="input\digitsReplacerTest.txt" />
+    <None Remove="input\noCommaSentencesTest.txt" />
     <None Remove="input\sortSentences.txt" />
     <None Remove="maxDigitsTest.txt" />
     <None Remove="theLongestWordTest.txt" />
@@ -19,6 +20,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="input\maxDigitsTest.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="input\noCommaSentencesTest.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="input\sortSentences.txt">
