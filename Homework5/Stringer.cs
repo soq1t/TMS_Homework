@@ -28,6 +28,10 @@ namespace Homework5
             StringActions.AddAction("Слова с максимальным количеством цифр", MaxDigitsWords);
             StringActions.AddAction("Саммое длинное слово", TheLongestWord);
             StringActions.AddAction("Замена цифр на слова", DigitsReplacer);
+            StringActions.AddAction(
+                "Сортировка предложений (безэмоциональные -> восклицательные -> вопросительные",
+                StringSorting
+            );
 
             StringActions.AddAction("Изменить строку / выйти из программы", ChangeData, true);
         }
@@ -202,6 +206,77 @@ namespace Homework5
 
             CancelAction();
         }
+        #endregion
+
+        #region Восклицательные и вопросительные предложения
+
+        private void StringSorting(object obj)
+        {
+            List<string> exclamations = new List<string>();
+            List<string> interrogations = new List<string>();
+            List<StringBuilder> commons = new List<StringBuilder>();
+
+            StringBuilder currentSentence = new StringBuilder();
+
+            foreach (char c in _data)
+            {
+                if (c == '.' && commons.Count > 0)
+                {
+                    commons.Last().Append(c);
+                }
+                else
+                {
+                    currentSentence.Append(c);
+
+                    switch (c)
+                    {
+                        case '.':
+                            commons.Add(new StringBuilder(currentSentence.ToString()));
+                            currentSentence.Clear();
+                            break;
+                        case '!':
+                            exclamations.Add(currentSentence.ToString());
+                            currentSentence.Clear();
+                            break;
+                        case '?':
+                            interrogations.Add(currentSentence.ToString());
+                            currentSentence.Clear();
+                            break;
+                    }
+                }
+            }
+
+            if (commons.Count == 0)
+                Console.WriteLine("Безэмоциональные предложения отсутствуют((");
+            else
+            {
+                Console.WriteLine($"Безэмоциональные предложения ({commons.Count} шт):");
+                commons.ForEach(s => Console.WriteLine(s.ToString().Trim()));
+            }
+
+            Console.WriteLine();
+
+            if (exclamations.Count == 0)
+                Console.WriteLine("Восклицательные предложения отсутствуют((");
+            else
+            {
+                Console.WriteLine($"Восклицательные предложения ({exclamations.Count} шт):");
+                exclamations.ForEach(s => Console.WriteLine(s.Trim()));
+            }
+
+            Console.WriteLine();
+
+            if (interrogations.Count == 0)
+                Console.WriteLine("Вопросительные предложения отсутствуют((");
+            else
+            {
+                Console.WriteLine($"Вопросительные предложения ({interrogations.Count} шт):");
+                interrogations.ForEach(s => Console.WriteLine(s.Trim()));
+            }
+
+            CancelAction();
+        }
+
         #endregion
 
         public void PerformStringAction(Action<object> action)

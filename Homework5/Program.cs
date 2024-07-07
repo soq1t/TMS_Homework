@@ -10,7 +10,7 @@ namespace Homework5
         static void Main(string[] args)
         {
             _initActions.AddAction("Начать работу со строкой", BeginProgram);
-            _initActions.AddAction("Выход из программы", ExitProgram);
+            _initActions.AddAction("Выход из программы", ExitProgram, true);
 
             _initActions.SelectAction().Invoke(null);
         }
