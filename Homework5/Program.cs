@@ -1,18 +1,32 @@
 ﻿using System.Diagnostics;
+using HomeworkToolkit;
 
 namespace Homework5
 {
     internal class Program
     {
-        static void Main(string[] args) { }
+        private static ActionSelector _initActions = new ActionSelector();
 
-        private static void SelectAction()
+        static void Main(string[] args)
         {
-            Console.Clear();
+            _initActions.AddAction(ConsoleKey.D1, "начать работу со строкой", BeginProgram);
+            _initActions.AddAction(ConsoleKey.D0, "выход из программы", ExitProgram);
 
-            Console.WriteLine("Выберите действие:");
-            Console.WriteLine("1 - начать работу с программой");
-            Console.WriteLine("0 - выход из программы");
+            _initActions.SelectAction().Invoke(null);
+        }
+
+        private static void ExitProgram(object obj) => Environment.Exit(0);
+
+        private static void BeginProgram(object obj)
+        {
+            string dataString = DataUtility.GetData();
+
+            if (dataString == null)
+                _initActions.SelectAction().Invoke(null);
+
+            Stringer stringer = new Stringer(dataString, _initActions);
+
+            stringer.PerformStringAction(stringer.StringActions.SelectAction());
         }
     }
 }

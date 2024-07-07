@@ -35,14 +35,19 @@ namespace Homework5
             do
             {
                 Console.Clear();
+                Console.WriteLine("Ваша строка:");
                 result = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(result))
                 {
-                    Console.WriteLine("Введите какие-нибудь данные)");
-                    Thread.Sleep(1500);
+                    Console.Clear();
+                    Console.WriteLine(
+                        "Введите какие-нибудь данные)\nНажмите любую клавишу для продолжения..."
+                    );
+                    Console.ReadKey(true);
                 }
             } while (string.IsNullOrWhiteSpace(result));
 
+            Console.Clear();
             return result;
         }
 
@@ -56,6 +61,7 @@ namespace Homework5
                 .ToList();
             if (txtFiles.Count == 0)
             {
+                Console.Clear();
                 Console.WriteLine(
                     "Не найден файл для чтения информации...\n\nНажмите любую клавишу для продолжения"
                 );
@@ -72,7 +78,7 @@ namespace Homework5
                 do
                 {
                     Console.Clear();
-                    Console.WriteLine("Выберите файл (стрелки вверх-вниз и Enter:");
+                    Console.WriteLine("Выберите файл (стрелки вверх-вниз и Enter):");
 
                     int i = 0;
                     foreach (FileInfo file in txtFiles)
