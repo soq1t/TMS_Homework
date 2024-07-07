@@ -25,6 +25,7 @@ namespace Homework5
                 "слова с максимальным количеством цифр",
                 MaxDigitsWords
             );
+            StringActions.AddAction(ConsoleKey.D2, "Саммое длинное слово", TheLongestWord);
 
             StringActions.AddAction(
                 ConsoleKey.D0,
@@ -36,12 +37,18 @@ namespace Homework5
         public void PerformStringAction(Action<object> action)
         {
             Console.Clear();
-            Console.WriteLine("Ваша строка:");
-            Console.WriteLine(_data);
+            Console.WriteLine($"Ваша строка:\n{_data}");
             Console.WriteLine();
 
             action.Invoke(null);
         }
+
+        #region Саммое длинное слово
+        private void TheLongestWord(object obj)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
 
         #region Слова с максимальным количеством цифр
         private void MaxDigitsWords(object obj)
@@ -70,7 +77,7 @@ namespace Homework5
             Console.WriteLine("Нажмите любую клавишу для продолжения...");
             Console.ReadKey();
 
-            PerformStringAction(StringActions.SelectAction());
+            PerformStringAction(StringActions.SelectAction($"Ваша строка:\n{_data}"));
         }
 
         private int DigitsAmount(string word)

@@ -26,7 +26,9 @@ namespace Homework5
 
             Stringer stringer = new Stringer(dataString, _initActions);
 
-            stringer.PerformStringAction(stringer.StringActions.SelectAction());
+            stringer.PerformStringAction(
+                stringer.StringActions.SelectAction($"Ваша строка:\n{dataString}")
+            );
         }
     }
 }
