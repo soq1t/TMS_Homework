@@ -27,25 +27,9 @@ namespace Homework5
 
             StringActions.AddAction("Слова с максимальным количеством цифр", MaxDigitsWords);
             StringActions.AddAction("Саммое длинное слово", TheLongestWord);
+            StringActions.AddAction("Замена цифр на слова", DigitsReplacer);
 
-            StringActions.AddAction("Изменить строку / выйти из программы", ChangeData);
-        }
-
-        public void PerformStringAction(Action<object> action)
-        {
-            Console.Clear();
-            Console.WriteLine($"Ваша строка:\n{_data}");
-            Console.WriteLine();
-
-            action.Invoke(null);
-        }
-
-        private void CancelAction()
-        {
-            Console.WriteLine();
-            Console.Write("Нажмите любую клавишу для продолжения...");
-            Console.ReadKey(true);
-            PerformStringAction(StringActions.SelectAction($"Ваша строка:\n{_data}"));
+            StringActions.AddAction("Изменить строку / выйти из программы", ChangeData, true);
         }
 
         #region Саммое длинное слово
@@ -120,14 +104,21 @@ namespace Homework5
                     maxDigitsWords.Add(word);
             }
 
-            Console.WriteLine($"Максимальное количество цифр в словах из данной строки: {max}");
-            Console.WriteLine($"Количество таких слов в строке: {maxDigitsWords.Count}");
-            Console.WriteLine();
-            Console.WriteLine("Слова с данным количеством цифр:");
+            if (max == 0)
+            {
+                Console.WriteLine("В данной строке нет слов, содержащих цифры!");
+            }
+            else
+            {
+                Console.WriteLine($"Максимальное количество цифр в словах из данной строки: {max}");
+                Console.WriteLine($"Количество таких слов в строке: {maxDigitsWords.Count}");
+                Console.WriteLine();
+                Console.WriteLine("Слова с данным количеством цифр:");
 
-            maxDigitsWords.ForEach(Console.WriteLine);
-            Console.WriteLine();
+                maxDigitsWords.ForEach(Console.WriteLine);
+            }
 
+            Console.WriteLine();
             CancelAction();
         }
 
@@ -161,6 +152,74 @@ namespace Homework5
         }
         #endregion
 
+        #region Замена цифр на буквы
+        private static Dictionary<char, string> _digitReplaceMap = new Dictionary<char, string>()
+        {
+            { '0', "ноль" },
+            { '1', "один" },
+            { '2', "два" },
+            { '3', "три" },
+            { '4', "четыре" },
+            { '5', "пять" },
+            { '6', "шесть" },
+            { '7', "семь" },
+            { '8', "восемь" },
+            { '9', "девять" },
+        };
+
+        private void DigitsReplacer(object obj)
+        {
+            int replaceCounter = 0;
+
+            StringBuilder newString = new StringBuilder();
+
+            for (int i = 0; i < _data.Length; i++)
+            {
+                char c = _data[i];
+                if (_digitReplaceMap.ContainsKey(c))
+                {
+                    replaceCounter++;
+
+                    if (i != 0 && newString.ToString().Last() != ' ')
+                        newString.Append(" ");
+
+                    newString.Append(_digitReplaceMap[c].ToUpper());
+
+                    if (i != _data.Length - 1 && _data[i + 1] != ' ')
+                        newString.Append(" ");
+                }
+                else
+                    newString.Append(c);
+            }
+
+            if (replaceCounter == 0)
+                Console.WriteLine("В данной строке не было цифр. Строка не изменилась!");
+            else
+            {
+                Console.WriteLine($"Количество замен в строке составило: {replaceCounter}");
+                Console.WriteLine($"Получившийся результат:\n{newString}");
+            }
+
+            CancelAction();
+        }
+        #endregion
+
+        public void PerformStringAction(Action<object> action)
+        {
+            Console.Clear();
+            Console.WriteLine($"Ваша строка:\n{_data}");
+            Console.WriteLine();
+
+            action.Invoke(null);
+        }
+
+        private void CancelAction()
+        {
+            Console.WriteLine();
+            Console.Write("Нажмите любую клавишу для продолжения...");
+            Console.ReadKey(true);
+            PerformStringAction(StringActions.SelectAction($"Ваша строка:\n{_data}"));
+        }
 
         private void ChangeData(object obj) => _exitActions.SelectAction().Invoke(null);
 

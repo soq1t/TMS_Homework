@@ -8,23 +8,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="input\digitsReplacerTest.txt" />
     <None Remove="maxDigitsTest.txt" />
     <None Remove="theLongestWordTest.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="input\digitsReplacerTest.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="input\maxDigitsTest.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="input\theLongestWordTest.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="HomeworkToolkit">
       <HintPath>..\HomeworkToolkit\bin\Release\net8.0\HomeworkToolkit.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="maxDigitsTest.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="theLongestWordTest.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
 </Project>

@@ -14,10 +14,10 @@ namespace Homework5
         public static string GetData()
         {
             ActionSelector actions = new ActionSelector();
-            actions.AddAction("Ввести строку в консоль", FromConsole);
             actions.AddAction("Прочитать строку из текстового файла", FromFile);
+            actions.AddAction("Ввести строку в консоль", FromConsole);
 
-            actions.SelectAction().Invoke(Directory.GetCurrentDirectory());
+            actions.SelectAction().Invoke(Directory.GetCurrentDirectory() + "\\input");
 
             return _result;
 
@@ -74,9 +74,11 @@ namespace Homework5
             if (txtFiles.Count == 0)
             {
                 Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(
                     "Не найден файл для чтения информации...\n\nНажмите любую клавишу для продолжения"
                 );
+                Console.ResetColor();
                 Console.ReadKey(true);
                 _result = null;
             }
@@ -89,18 +91,27 @@ namespace Homework5
 
                 do
                 {
+                    bool isSelectedPos = false;
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("Выберите файл (стрелки вверх-вниз и Enter):");
+                    Console.ResetColor();
 
                     int i = 0;
                     foreach (FileInfo file in txtFiles)
                     {
                         if (i == selectedPosition)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("> " + file.Name);
+                            isSelectedPos = true;
+                        }
                         else
                             Console.WriteLine(file.Name);
 
                         i++;
+                        if (isSelectedPos)
+                            Console.ResetColor();
                     }
 
                     ConsoleKey key = Console.ReadKey().Key;
@@ -111,14 +122,16 @@ namespace Homework5
                             selectedFile = txtFiles[selectedPosition];
                             break;
                         case ConsoleKey.DownArrow:
-                            selectedPosition =
-                                (selectedPosition <= txtFiles.Count - 1)
-                                    ? txtFiles.Count - 1
-                                    : selectedPosition++;
-
+                            if (selectedPosition >= txtFiles.Count - 1)
+                                selectedPosition = 0;
+                            else
+                                selectedPosition++;
                             break;
                         case ConsoleKey.UpArrow:
-                            selectedPosition = (selectedPosition >= 0) ? 0 : selectedPosition--;
+                            if (selectedPosition > 0)
+                                selectedPosition--;
+                            else
+                                selectedPosition = txtFiles.Count - 1;
                             break;
                     }
                 } while (selectedFile == null);
