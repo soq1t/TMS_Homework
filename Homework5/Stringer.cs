@@ -10,12 +10,17 @@ namespace Homework5
     public class Stringer
     {
         private string _data;
+        private List<string> _words;
         private ActionSelector _exitActions;
         public ActionSelector StringActions { get; private set; }
 
         public Stringer(string DataStr, ActionSelector ExitActions)
         {
             _data = DataStr;
+            string noSigns = GetNoSignsString(DataStr);
+
+            _words = noSigns.Split(" ").ToList();
+
             _exitActions = ExitActions;
 
             StringActions = new ActionSelector();
@@ -35,25 +40,81 @@ namespace Homework5
             action.Invoke(null);
         }
 
+        private void CancelAction()
+        {
+            Console.WriteLine();
+            Console.Write("Нажмите любую клавишу для продолжения...");
+            Console.ReadKey(true);
+            PerformStringAction(StringActions.SelectAction($"Ваша строка:\n{_data}"));
+        }
+
         #region Саммое длинное слово
         private void TheLongestWord(object obj)
         {
-            throw new NotImplementedException();
+            Dictionary<string, int> theLongestWords = GetLongestWordsList(_words);
+            int wordLength = theLongestWords.First().Key.Length;
+
+            Console.WriteLine($"Количество букв в саммом длинном слове строки: {wordLength}");
+            if (theLongestWords.Count == 1)
+            {
+                Console.WriteLine(
+                    $"Это слово: {theLongestWords.First().Key}\t\tОно встречается {theLongestWords.First().Value} раз!"
+                );
+            }
+            else
+            {
+                Console.WriteLine("В данной строке таких слов несколько:");
+                foreach (KeyValuePair<string, int> word in theLongestWords)
+                {
+                    Console.WriteLine($"Слово: {word.Key}\t\tОно встречается {word.Value} раз");
+                }
+            }
+
+            CancelAction();
+        }
+
+        private string GetTheLongestWord(List<string> words)
+        {
+            string result = string.Empty;
+
+            foreach (string word in words)
+            {
+                if (word.Length > result.Length)
+                    result = word;
+            }
+
+            return result;
+        }
+
+        private Dictionary<string, int> GetLongestWordsList(List<string> words)
+        {
+            int wordLength = GetTheLongestWord(words).Length;
+
+            Dictionary<string, int> result = new Dictionary<string, int>();
+
+            foreach (string word in words)
+            {
+                if (word.Length == wordLength)
+                {
+                    if (result.ContainsKey(word))
+                        result[word]++;
+                    else
+                        result.Add(word, 1);
+                }
+            }
+
+            return result;
         }
         #endregion
 
         #region Слова с максимальным количеством цифр
         private void MaxDigitsWords(object obj)
         {
-            string noSignsString = GetNoSignsString(_data);
-
-            List<string> words = noSignsString.Split(' ').ToList();
-
-            int max = GetMaxDigitsAmount(words);
+            int max = GetMaxDigitsAmount(_words);
 
             List<string> maxDigitsWords = new List<string>();
 
-            foreach (string word in words)
+            foreach (string word in _words)
             {
                 if (DigitsAmount(word) == max)
                     maxDigitsWords.Add(word);
@@ -66,10 +127,8 @@ namespace Homework5
 
             maxDigitsWords.ForEach(Console.WriteLine);
             Console.WriteLine();
-            Console.WriteLine("Нажмите любую клавишу для продолжения...");
-            Console.ReadKey();
 
-            PerformStringAction(StringActions.SelectAction($"Ваша строка:\n{_data}"));
+            CancelAction();
         }
 
         private int DigitsAmount(string word)
@@ -114,6 +173,8 @@ namespace Homework5
             noSignsStr = noSignsStr.Replace("?", string.Empty);
             noSignsStr = noSignsStr.Replace(":", string.Empty);
             noSignsStr = noSignsStr.Replace(";", string.Empty);
+            noSignsStr = noSignsStr.Replace(")", string.Empty);
+            noSignsStr = noSignsStr.Replace("(", string.Empty);
             return noSignsStr;
         }
     }
