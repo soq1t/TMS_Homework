@@ -295,7 +295,7 @@ namespace Homework5
             {
                 string lower = word.ToLower();
 
-                if (lower.First() == lower.Last())
+                if (lower.First() == lower.Last() && lower.Length > 1)
                     sameList.Add(word);
             }
 
