@@ -20,18 +20,10 @@ namespace Homework5
 
             StringActions = new ActionSelector();
 
-            StringActions.AddAction(
-                ConsoleKey.D1,
-                "слова с максимальным количеством цифр",
-                MaxDigitsWords
-            );
-            StringActions.AddAction(ConsoleKey.D2, "Саммое длинное слово", TheLongestWord);
+            StringActions.AddAction("Слова с максимальным количеством цифр", MaxDigitsWords);
+            StringActions.AddAction("Саммое длинное слово", TheLongestWord);
 
-            StringActions.AddAction(
-                ConsoleKey.D0,
-                "изменить строку / выйти из программы",
-                ChangeData
-            );
+            StringActions.AddAction("Изменить строку / выйти из программы", ChangeData);
         }
 
         public void PerformStringAction(Action<object> action)
