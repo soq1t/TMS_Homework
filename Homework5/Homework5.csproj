@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="input\digitsReplacerTest.txt" />
+    <None Remove="input\noCommaSentencesTest.txt" />
+    <None Remove="input\sameStartsEndsTest.txt" />
+    <None Remove="input\sortSentences.txt" />
+    <None Remove="maxDigitsTest.txt" />
+    <None Remove="theLongestWordTest.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="input\digitsReplacerTest.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="input\maxDigitsTest.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="input\noCommaSentencesTest.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="input\sameStartsEndsTest.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="input\sortSentences.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="input\theLongestWordTest.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="MyHomeworkToolkit">
+      <HintPath>..\MyHomeworkToolkit\bin\Release\net8.0\MyHomeworkToolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
