@@ -3,34 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static MyHomeworkToolkit.ErrorHandler;
 
 namespace Homework6
 {
     internal class Phone
     {
-        private string _number;
+        private long _number;
         private string _model;
         private double _weight;
-
-        public string Number
+        public long Number
         {
-            get => (string.IsNullOrEmpty(_number)) ? "Номер телефона не указан!" : "+" + _number;
             set
             {
-                value = value.Replace(" ", string.Empty).Trim();
-                bool isNumberCorrect = true;
-
-                foreach (char c in value)
-                {
-                    if (!Int32.TryParse(c.ToString(), out int x))
-                    {
-                        isNumberCorrect = false;
-                        Console.WriteLine("Неверный формат номера (нужно только цифры)");
-                        break;
-                    }
-                }
-
-                if (isNumberCorrect)
+                if (value.ToString().Length < 12)
+                    ShowError("Длина номера должна быть 12 цифр!");
+                else
                     _number = value;
             }
         }
@@ -41,49 +29,56 @@ namespace Homework6
         }
         public double Weight
         {
-            get => _weight;
             set
             {
                 if (value < 0)
-                    Console.WriteLine("Вес не может быть отрицательным!");
+                    ShowError("Вес не может быть отрицательным!");
                 else if (value == 0)
-                    Console.WriteLine("У телефона должен быть какой-то вес!");
+                    ShowError("У телефона должен быть какой-то вес!");
                 else
                     _weight = value;
             }
         }
+        public string FormattedWeight => string.Format("{0:N2} г.", _weight);
 
         public void ReceiveCall(string name) => Console.WriteLine($"Вам звонит абонент: {name}");
 
-        public void ReceiveCall(string name, string number)
+        public void ReceiveCall(string name, long number)
         {
             ReceiveCall(name);
-            Console.WriteLine($"Номер телефона звонящего абонента: +{number}");
+            Console.WriteLine(
+                $"Номер телефона звонящего абонента: {number.ToString("+### (##) ###-##-##")}"
+            );
         }
 
-        public void SendMessage(params string[] numbers)
+        public void SendMessage(params long[] numbers)
         {
             Console.WriteLine("Сообщение будет отправлено по следующим номерам:");
 
-            foreach (string number in numbers)
-                Console.WriteLine($"+{number}");
+            foreach (long number in numbers)
+                Console.WriteLine(number.ToString("+### (##) ###-##-##"));
         }
 
-        public string GetNumber() => Number;
+        public string GetNumber() =>
+            (_number == 0)
+                ? "Номер не указан!"
+                : string.Format("{0: +### (##) ###-##-##}", _number);
 
-        public Phone(string number, string model, double weight)
+        public Phone(long number, string model, double weight)
             : this(number, model)
         {
-            Weight = weight;
+            _weight = weight;
         }
 
-        public Phone(string number, string model)
+        public Phone(long number, string model)
         {
-            Number = number;
-            Model = model;
+            _number = number;
+            _model = model;
         }
 
         public Phone()
-            : this(null, null, 0) { }
+            : this(000000000000, null, 0) { }
+
+        public override string ToString() => $"{Model} ({GetNumber()})";
     }
 }

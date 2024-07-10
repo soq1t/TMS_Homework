@@ -7,4 +7,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="MyHomeworkToolkit">
+      <HintPath>..\MyHomeworkToolkit\bin\Debug\net8.0\MyHomeworkToolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
