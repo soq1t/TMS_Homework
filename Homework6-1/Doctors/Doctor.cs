@@ -6,27 +6,35 @@ using System.Threading.Tasks;
 
 namespace Homework6_1.Doctors
 {
-    public abstract class Doctor
+    public abstract class Doctor : Person
     {
-        private ConsoleColor _color;
-        public string Name { get; }
         public string Type { get; }
 
-        protected Doctor(string name, string type, ConsoleColor color = ConsoleColor.Green)
+        protected Doctor(string name, int age, string type, ConsoleColor color = ConsoleColor.Green)
+            : base(name, age, color)
         {
-            Name = name;
             Type = type;
-            _color = color;
         }
 
         public abstract void PerformHealing();
+
+        public override void Introduce()
+        {
+            base.Introduce();
+            ConsoleColor current = Console.ForegroundColor;
+            Console.ForegroundColor = _color;
+
+            Console.WriteLine($"Профессия: {Type}");
+            Console.ForegroundColor = current;
+        }
 
         protected void Say(string message)
         {
             ConsoleColor current = Console.ForegroundColor;
             Console.ForegroundColor = _color;
 
-            Console.WriteLine($"{Name}, {Type}: {message}");
+            Console.WriteLine();
+            Console.WriteLine($"[{Type}] {Name}: {message}");
             Console.ForegroundColor = current;
             Thread.Sleep(500);
         }
@@ -39,17 +47,18 @@ namespace Homework6_1.Doctors
                 Loading();
         }
 
-        protected void Loading()
+        protected void Loading(int length = 10)
         {
             ConsoleColor current = Console.ForegroundColor;
             Console.ForegroundColor = _color;
             Random random = new Random();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < length; i++)
             {
-                Thread.Sleep(random.Next(100, 500));
-                Console.Write("*");
+                Thread.Sleep(random.Next(1, 300));
+                Console.Write("><><");
             }
+            Console.WriteLine();
 
             Console.ForegroundColor = current;
         }

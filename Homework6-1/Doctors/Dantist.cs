@@ -8,8 +8,8 @@ namespace Homework6_1.Doctors
 {
     public class Dantist : Doctor
     {
-        public Dantist(string name, ConsoleColor color = ConsoleColor.Magenta)
-            : base(name, "Зубной доктор", color) { }
+        public Dantist(string name, int age, ConsoleColor color = ConsoleColor.Magenta)
+            : base(name, age, "Зубной доктор", color) { }
 
         public override void PerformHealing()
         {
