@@ -46,6 +46,30 @@ namespace Homework6_1
         private static void Greetings()
         {
             ConsoleUtility.WriteLineColored("Добро пожаловать в нашу клинику!", ConsoleColor.Cyan);
+            ConsoleUtility.WriteColored(
+                "В данный момент в клинике работает врачей: ",
+                ConsoleColor.Cyan
+            );
+            ConsoleUtility.WriteLineColored(
+                _doctors.Count.ToString(),
+                (_doctors.Count > 0) ? ConsoleColor.Green : ConsoleColor.Red
+            );
+
+            ConsoleUtility.WriteColored("Пациентов в клинике: ", ConsoleColor.Cyan);
+            ConsoleUtility.WriteLineColored(
+                _patients.Count.ToString(),
+                (_patients.Count > 0) ? ConsoleColor.Green : ConsoleColor.Red
+            );
+
+            ConsoleUtility.WriteColored(
+                "Назначенных планов лечения пациентам: ",
+                ConsoleColor.Cyan
+            );
+            ConsoleUtility.WriteLineColored(
+                _healingPlans.Count.ToString(),
+                (_healingPlans.Count > 0) ? ConsoleColor.Green : ConsoleColor.Red
+            );
+
             Console.WriteLine();
             ConsoleUtility.WriteLineColored("Выберите желаемое действие:", ConsoleColor.Yellow);
         }
