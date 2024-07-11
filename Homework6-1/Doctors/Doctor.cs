@@ -16,6 +16,8 @@ namespace Homework6_1.Doctors
             Type = type;
         }
 
+        public override string DisplayedName => $"[{Type}] {Name}, Возраст: {Age}";
+
         public abstract void PerformHealing();
 
         public override void Introduce()

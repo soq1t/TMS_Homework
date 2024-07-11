@@ -10,6 +10,8 @@ namespace Homework6_1
     {
         private string _diagnose;
 
+        public override string DisplayedName => $"{Name},Возраст: {Age}\nДиагноз: {_diagnose}";
+
         public Patient(
             string name,
             int age,

@@ -4,15 +4,18 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MyHomeworkToolkit.ObjectSelecting;
 
 namespace Homework6_1
 {
-    public abstract class Person
+    public abstract class Person : ISelectableObject
     {
         protected ConsoleColor _color;
         public string Name { get; }
 
         public int Age { get; }
+
+        public abstract string DisplayedName { get; }
 
         protected Person(string name, int age, ConsoleColor color = ConsoleColor.Green)
         {
