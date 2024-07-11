@@ -25,8 +25,7 @@ namespace MyHomeworkToolkit
             }
         }
 
-        public void SelectAction(string message) =>
-            ObjectSelector<ActionData>.SelectFromList(_actions, message);
+        public void SelectAction(string message) => SelectAction(() => DisplayMessage(message));
 
         public void SelectAction() => SelectAction("Выберите действие:");
 
@@ -34,6 +33,12 @@ namespace MyHomeworkToolkit
         {
             ActionData action = new ActionData(message, performedAction);
             _actions.Add(action);
+        }
+
+        private void DisplayMessage(string message)
+        {
+            ConsoleUtility.WriteColored(message, ConsoleColor.Yellow);
+            Console.WriteLine();
         }
     }
 }
