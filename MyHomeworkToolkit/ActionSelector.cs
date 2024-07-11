@@ -20,8 +20,8 @@ namespace MyHomeworkToolkit
 
             if (selectedAction != null)
             {
-                Action action = (Action)selectedAction;
-                action.Invoke();
+                ActionData action = (ActionData)selectedAction;
+                action.PerformedAction.Invoke();
             }
         }
 
