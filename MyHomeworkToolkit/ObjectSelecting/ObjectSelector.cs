@@ -24,6 +24,7 @@ namespace MyHomeworkToolkit.ObjectSelecting
 
             while (true)
             {
+                Console.Clear();
                 predicateAction?.Invoke();
 
                 WriteLineColored(
