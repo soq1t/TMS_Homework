@@ -3,27 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MyHomeworkToolkit.ObjectSelecting;
 
 namespace MyHomeworkToolkit
 {
-    internal class ActionData
+    internal class ActionData : ISelectableObject
     {
-        internal int Id { get; private set; }
-        internal string Message { get; private set; }
-        internal Action<object> PerformedAction { get; private set; }
-        internal bool IsSeparated { get; private set; }
+        public string DisplayedName { get; private set; }
+        internal Action PerformedAction { get; private set; }
 
-        internal ActionData(
-            int id,
-            string message,
-            Action<object> performedAction,
-            bool isSeparated
-        )
+        internal ActionData(string displayedName, Action performedAction)
         {
-            Id = id;
-            Message = message;
+            DisplayedName = displayedName;
             PerformedAction = performedAction;
-            IsSeparated = isSeparated;
         }
     }
 }
