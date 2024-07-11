@@ -1,4 +1,6 @@
-﻿namespace MyHomeworkToolkit
+﻿using MyHomeworkToolkit.ObjectSelecting;
+
+namespace MyHomeworkToolkit
 {
     public class ActionSelector
     {
@@ -9,88 +11,29 @@
             _actions = new List<ActionData>();
         }
 
-        public Action<object> SelectAction(string? initMessage = null)
+        public void SelectAction(Action predicatedAction)
         {
-            Console.Clear();
+            object selectedAction = ObjectSelector<ActionData>.SelectFromList(
+                _actions,
+                predicatedAction
+            );
 
-            if (_actions.Count == 0)
+            if (selectedAction != null)
             {
-                Console.WriteLine("Нет доступных вариантов действий!");
-                return null;
-            }
-
-            int selectedActionIndex = 0;
-
-            while (true)
-            {
-                Console.Clear();
-
-                if (initMessage != null)
-                    Console.WriteLine(initMessage + "\n");
-
-                Console.WriteLine(
-                    "Выберите действие (стрелки вверх-вниз - изменить выбор, enter - подтвердить выбор):"
-                );
-                WriteSeparator();
-
-                foreach (var action in _actions)
-                {
-                    if (action.IsSeparated)
-                    {
-                        Console.WriteLine();
-                        WriteSeparator();
-                    }
-
-                    if (action.Id == selectedActionIndex)
-                        Console.Write("> ");
-
-                    Console.WriteLine(action.Message);
-                }
-                WriteSeparator();
-
-                ConsoleKey pressedKey = Console.ReadKey(true).Key;
-
-                switch (pressedKey)
-                {
-                    case ConsoleKey.Enter:
-                        foreach (ActionData action in _actions)
-                        {
-                            if (action.Id == selectedActionIndex)
-                                return action.PerformedAction;
-                        }
-                        break;
-                    case ConsoleKey.DownArrow:
-                        if (selectedActionIndex < _actions.Count - 1)
-                            selectedActionIndex++;
-                        break;
-
-                    case ConsoleKey.UpArrow:
-                        if (selectedActionIndex > 0)
-                            selectedActionIndex--;
-                        break;
-                }
+                Action action = (Action)selectedAction;
+                action.Invoke();
             }
         }
 
-        public void AddAction(
-            string message,
-            Action<object> performedAction,
-            bool isSeparated = false
-        )
+        public void SelectAction(string message) =>
+            ObjectSelector<ActionData>.SelectFromList(_actions, message);
+
+        public void SelectAction() => SelectAction("Выберите действие:");
+
+        public void AddAction(string message, Action performedAction)
         {
-            int actionId = _actions.Count;
-            ActionData action = new ActionData(actionId, message, performedAction, isSeparated);
+            ActionData action = new ActionData(message, performedAction);
             _actions.Add(action);
-        }
-
-        private void WriteSeparator(int length = 10)
-        {
-            for (int i = 0; i < length; i++)
-            {
-                Console.Write(">=<-");
-            }
-
-            Console.WriteLine(">=<");
         }
     }
 }
