@@ -18,10 +18,20 @@ namespace MyHomeworkToolkit
                 predicatedAction
             );
 
+            Console.Clear();
             if (selectedAction != null)
             {
                 ActionData action = (ActionData)selectedAction;
                 action.PerformedAction.Invoke();
+            }
+            else
+            {
+                ConsoleUtility.WriteLineColored(
+                    "Выбор действия был отменён!\nНажмите любую клавишу для продолжения",
+                    ConsoleColor.Red
+                );
+                Console.ReadKey(true);
+                Console.Clear();
             }
         }
 
