@@ -11,6 +11,7 @@ namespace Homework6_1
         {
             InitDoctors();
             InitPatients();
+            InitHealingPlans();
             InitActions();
 
             SelectAction();
@@ -23,12 +24,14 @@ namespace Homework6_1
         {
             _actions.AddAction("Действия с пациентами", SelectPatientActions);
             _actions.AddAction("Действия с врачами", SelectDoctorsActions);
+            _actions.AddAction("Планы лечения пациентов", SelectHealingActions);
 
             _actions.AddAction("Закрыть программу", CloseProgram);
         }
 
         private static void SelectAction()
         {
+            Console.ResetColor();
             _actions.SelectAction(Greetings);
             Console.WriteLine();
 
@@ -59,6 +62,8 @@ namespace Homework6_1
         {
             _patients.Add(new Patient("Варфаломей", 25, "Болит ухо"));
             _patients.Add(new Patient("Антонина Петровна", 89, "Болит голова"));
+            _patients.Add(new Patient("Гоша", 15, "Перелом ноги"));
+            _patients.Add(new Patient("Сергей", 20, "Отвалилась пломба"));
 
             _patientActions.AddAction("Показать список пациентов", ShowPatients);
             _patientActions.AddAction("Записать нового пациента в клинику", AddPatient);
@@ -196,6 +201,16 @@ namespace Homework6_1
             }
         }
 
+        private static void HealingPlanMessage()
+        {
+            ConsoleUtility.WriteLineColored(
+                "Назначение плана лечения пациенту",
+                ConsoleColor.Yellow
+            );
+            Console.WriteLine();
+            ConsoleUtility.WriteLineColored("Выберите пациента:", ConsoleColor.Yellow);
+        }
+
         #endregion
 
         #region Doctors
@@ -213,8 +228,13 @@ namespace Homework6_1
         private static void InitDoctors()
         {
             _doctors.Add(new Therapist("Светлана", 22));
+            _doctors.Add(new Therapist("Алексей", 28));
+
             _doctors.Add(new Surgeon("Анатолий", 41));
+
             _doctors.Add(new Dantist("Ирина", 18));
+            _doctors.Add(new Dantist("Руслан", 29));
+            _doctors.Add(new Dantist("Степан", 31));
 
             _doctorsActions.AddAction("Показать список врачей", ShowDoctors);
             _doctorsActions.AddAction("Нанять нового врача", AddDoctor);
@@ -358,6 +378,109 @@ namespace Homework6_1
             }
         }
 
+        #endregion
+
+        #region Healing Plans
+        private static List<HealingPlan> _healingPlans = new List<HealingPlan>();
+
+        private static ActionSelector _healingActions = new ActionSelector();
+
+        private static void InitHealingPlans()
+        {
+            _healingActions.AddAction("Назначить план лечения пациенту", AssignHealingPlan);
+            _healingActions.AddAction("Показать план лечения пациента", CheckPatientsHealingPlan);
+            _healingActions.AddAction("Начать лечение", PerformHealingPlan);
+            _healingActions.AddAction("Вернуться на главную", SelectAction);
+        }
+
+        private static void SelectHealingActions()
+        {
+            _healingActions.SelectAction("Доступные действия с планами лечения:");
+            Console.WriteLine();
+
+            ConsoleUtility.WriteLineColored(
+                "Нажмите любую клавишу для продолжения",
+                ConsoleColor.Yellow
+            );
+            Console.ReadKey(true);
+            SelectHealingActions();
+        }
+
+        private static void AssignHealingPlan()
+        {
+            Console.Clear();
+            Patient patient = ObjectSelector<Patient>.SelectFromList(_patients, HealingPlanMessage);
+
+            if (patient != null)
+            {
+                HealingPlan plan = patient.AssignHealingPlan(_doctors);
+
+                if (plan.AssignedDoctor != null)
+                    _healingPlans.Add(plan);
+            }
+        }
+
+        private static void CheckPatientsHealingPlan()
+        {
+            List<Patient> patientsWithPlan = _patients.Where(p => p.IsHealingPlanAssigned).ToList();
+
+            if (patientsWithPlan.Count > 0)
+            {
+                Patient patient = ObjectSelector<Patient>.SelectFromList(
+                    patientsWithPlan,
+                    "Выберите пациента:"
+                );
+
+                if (patient != null)
+                {
+                    Console.Clear();
+                    patient.CheckHealingPlan();
+                }
+            }
+            else
+            {
+                ConsoleUtility.WriteLineColored(
+                    "Ни одному из пациентов не назначен план лечения!",
+                    ConsoleColor.Red
+                );
+            }
+        }
+
+        private static void PerformHealingPlan()
+        {
+            Console.Clear();
+
+            if (_healingPlans.Count == 0)
+            {
+                ConsoleUtility.WriteLineColored(
+                    "Отсутствуют планы лечения пациентов",
+                    ConsoleColor.Green
+                );
+            }
+            else
+            {
+                HealingPlan plan = ObjectSelector<HealingPlan>.SelectFromList(
+                    _healingPlans,
+                    "Выберите план лечения:"
+                );
+
+                if (plan != null)
+                {
+                    bool isHealingSucceed = plan.HealPatient();
+
+                    if (isHealingSucceed)
+                    {
+                        _healingPlans.Remove(plan);
+                        _patients.Remove(plan.AssignedPatient);
+                        Console.WriteLine();
+                        ConsoleUtility.WriteLineColored(
+                            $"Пациент \"{plan.AssignedPatient.Name}\" был выписан из клиники!",
+                            ConsoleColor.Green
+                        );
+                    }
+                }
+            }
+        }
         #endregion
     }
 }

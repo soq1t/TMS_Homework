@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Homework6_1.Doctors;
+using MyHomeworkToolkit;
 
 namespace Homework6_1
 {
     public class Patient : Person
     {
         private string _diagnose;
-
+        private HealingPlan _healingPlan;
+        public bool IsHealingPlanAssigned => _healingPlan.AssignedDoctor != null;
         public override string DisplayedName => $"{Name},Возраст: {Age}\nДиагноз: {_diagnose}";
 
         public Patient(
@@ -21,6 +24,7 @@ namespace Homework6_1
             : base(name, age, color)
         {
             _diagnose = diagnose;
+            _healingPlan = new HealingPlan(this);
         }
 
         public override void Introduce()
@@ -38,23 +42,22 @@ namespace Homework6_1
 
         public void Heal()
         {
-            ConsoleColor current = Console.ForegroundColor;
-            Console.ForegroundColor = _color;
-            Console.WriteLine($"Выполняется лечение пациента: {Name}");
-            _diagnose = "Здоров как бык";
-            Console.ForegroundColor = current;
-            Console.WriteLine();
+            _healingPlan.HealPatient();
         }
 
         public void SetDiagnose(string diagnose) => _diagnose = diagnose;
 
-        public void CheckDiagnose()
-        {
-            ConsoleColor current = Console.ForegroundColor;
-            Console.ForegroundColor = _color;
+        public void CheckDiagnose() =>
+            ConsoleUtility.WriteLineColored($"Диагноз пациента: {_diagnose}", _color);
 
-            Console.WriteLine($"Диагноз пациента: {_diagnose}");
-            Console.ForegroundColor = current;
+        public HealingPlan AssignHealingPlan(List<Doctor> doctors)
+        {
+            _healingPlan = new HealingPlan(this);
+            _healingPlan.AssignDoctor(doctors);
+
+            return _healingPlan;
         }
+
+        public void CheckHealingPlan() => _healingPlan.Print();
     }
 }
