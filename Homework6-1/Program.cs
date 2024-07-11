@@ -1,4 +1,5 @@
-﻿using Homework6_1.Doctors;
+﻿using System.Xml.Linq;
+using Homework6_1.Doctors;
 using MyHomeworkToolkit;
 using MyHomeworkToolkit.ObjectSelecting;
 
@@ -202,6 +203,13 @@ namespace Homework6_1
 
         private static ActionSelector _doctorsActions = new ActionSelector();
 
+        private static List<TextOption> _doctorTypes = new List<TextOption>()
+        {
+            new TextOption("Хирург"),
+            new TextOption("Зубной врач"),
+            new TextOption("Терапевт")
+        };
+
         private static void InitDoctors()
         {
             _doctors.Add(new Therapist("Светлана", 22));
@@ -209,6 +217,8 @@ namespace Homework6_1
             _doctors.Add(new Dantist("Ирина", 18));
 
             _doctorsActions.AddAction("Показать список врачей", ShowDoctors);
+            _doctorsActions.AddAction("Нанять нового врача", AddDoctor);
+            _doctorsActions.AddAction("Уволить врача", RemoveDoctor);
             _doctorsActions.AddAction("Вернуться на главную", SelectAction);
         }
 
@@ -259,6 +269,93 @@ namespace Homework6_1
         {
             Console.Clear();
             ConsoleUtility.WriteLineColored("Режим найма нового врача", ConsoleColor.Yellow);
+
+            TextOption doctorType;
+            string name;
+            int age;
+
+            do
+            {
+                doctorType = ObjectSelector<TextOption>.SelectFromList(
+                    _doctorTypes,
+                    "Выберите профессию нового врача:"
+                );
+
+                if (doctorType == null)
+                {
+                    Console.Clear();
+                    ConsoleUtility.WriteLineColored(
+                        "Нужно указать профессию нового врача!",
+                        ConsoleColor.Red
+                    );
+                    Console.ReadKey(true);
+                }
+            } while (doctorType == null);
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            do
+            {
+                Console.Write("Имя врача: ");
+                name = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(name))
+                    ConsoleUtility.WriteLineColored(
+                        "Обязательно введите имя врача!",
+                        ConsoleColor.Red
+                    );
+
+                Console.WriteLine();
+            } while (string.IsNullOrEmpty(name));
+
+            do
+            {
+                Console.Write("Возраст врача: ");
+                Int32.TryParse(Console.ReadLine(), out age);
+
+                if (age <= 0)
+                    ConsoleUtility.WriteLineColored(
+                        "Неверное значение возраста врача!",
+                        ConsoleColor.Red
+                    );
+
+                Console.WriteLine();
+            } while (age == 0);
+
+            Doctor doctor;
+
+            if (doctorType.DisplayedName == "Хирург")
+                doctor = new Surgeon(name, age);
+            else if (doctorType.DisplayedName == "Зубной врач")
+                doctor = new Dantist(name, age);
+            else
+                doctor = new Therapist(name, age);
+
+            Console.Clear();
+            Console.ResetColor();
+            ConsoleUtility.WriteLineColored("Данные нового врача:", ConsoleColor.Green);
+            doctor.Introduce();
+            _doctors.Add(doctor);
+        }
+
+        private static void RemoveDoctor()
+        {
+            Console.Clear();
+            ConsoleUtility.WriteLineColored(
+                "Выберите врача, которого желаете уволить из клиники:",
+                ConsoleColor.Yellow
+            );
+
+            Doctor doctor = ObjectSelector<Doctor>.SelectFromList(_doctors);
+
+            if (doctor != null)
+            {
+                _doctors.Remove(doctor);
+                Console.Clear();
+                ConsoleUtility.WriteLineColored(
+                    $"[{doctor.Type}] \"{doctor.Name}\" был успешно уволен из клиники!",
+                    ConsoleColor.Green
+                );
+            }
         }
 
         #endregion
