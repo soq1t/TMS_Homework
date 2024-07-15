@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MyHomeworkToolkit;
+using MyHomeworkToolkit.ObjectSelecting;
 
 namespace Homework7_2
 {
-    internal class CreditCard
+    internal class CreditCard : ISelectableObject
     {
         private delegate bool MoneyOperation(double amount, bool displayInfoMessages);
 
@@ -18,6 +19,10 @@ namespace Homework7_2
 
         private const string DefaultNumber = "1111 1111 1111 1111";
         public string Number { get; private set; }
+
+        public string DisplayedName =>
+            $"Номер карты: {Number}\nСумма на счёте: {string.Format(_culture, "{0:C2}", _money)}";
+
         private double _money;
 
         public CreditCard()
@@ -26,12 +31,9 @@ namespace Homework7_2
         public CreditCard(string number)
             : this(number, 0) { }
 
-        public CreditCard(string number, double overdraft)
-            : this(number, 0, overdraft) { }
-
         public CreditCard(string number, double money, double overdraft = 1000)
         {
-            overdraft = -Math.Abs(overdraft);
+            _overdraft = -Math.Abs(overdraft);
 
             if (!SetNumber(number, false))
             {
@@ -63,12 +65,30 @@ namespace Homework7_2
         public void PrintCardInfo()
         {
             ConsoleUtility.WriteColored("Номер карты: ", ConsoleColor.Cyan);
-            ConsoleUtility.WriteLineColored(Number, ConsoleColor.Green);
+            ConsoleUtility.WriteLineColored(Number, ConsoleColor.White);
 
             PrintMoney();
+
+            ConsoleUtility.WriteColored("Допустимый овердрафт: ", ConsoleColor.Cyan);
+            ConsoleUtility.WriteLineColored(
+                string.Format(_culture, "{0:C2}", Math.Abs(_overdraft)),
+                ConsoleColor.Red
+            );
         }
 
         #region Card Number Methods
+
+        public static string GetRandomCardNumber()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            Random random = new Random();
+
+            for (int i = 0; i < 16; i++)
+                stringBuilder.Append(random.Next(0, 10).ToString());
+
+            return stringBuilder.ToString();
+        }
+
         public void SetNumber()
         {
             string number;
@@ -131,21 +151,21 @@ namespace Homework7_2
             int i = 1;
             foreach (char c in input)
             {
+                sb.Append(c);
+
                 if (i % 4 == 0)
                     sb.Append(' ');
-
-                sb.Append(c);
                 i++;
             }
 
-            return sb.ToString();
+            return sb.ToString().Trim();
         }
         #endregion
 
         #region Money Methods
         public void PrintMoney()
         {
-            if (_money > 0)
+            if (_money >= 0)
             {
                 ConsoleUtility.WriteColored("Текущая сумма на счёте: ", ConsoleColor.Cyan);
                 ConsoleUtility.WriteLineColored(
@@ -188,7 +208,7 @@ namespace Homework7_2
                         string.Format(_culture, "{0:C2}", amount),
                         ConsoleColor.Cyan
                     );
-                    ConsoleUtility.WriteLineColored($"на карту!", ConsoleColor.Green);
+                    ConsoleUtility.WriteLineColored($" на карту!", ConsoleColor.Green);
                 }
                 Console.WriteLine();
                 PrintCardInfo();
@@ -227,7 +247,7 @@ namespace Homework7_2
                         string.Format(_culture, "{0:C2}", amount),
                         ConsoleColor.Cyan
                     );
-                    ConsoleUtility.WriteLineColored($"с карты!", ConsoleColor.Green);
+                    ConsoleUtility.WriteLineColored($" с карты!", ConsoleColor.Green);
                 }
                 Console.WriteLine();
                 PrintCardInfo();
