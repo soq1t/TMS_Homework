@@ -31,6 +31,8 @@ namespace MyHomeworkToolkit
 
             if (clearAfter)
                 Console.Clear();
+
+            Console.ForegroundColor = currentColor;
         }
     }
 }
