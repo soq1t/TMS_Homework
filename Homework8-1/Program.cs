@@ -16,8 +16,12 @@ namespace Homework8_1
 
             _actions.AddAction("Поменять кличку животному", RenameAnimal);
             _actions.AddAction("Покормить животное", FeedAnimal);
+
+            _actions.AddSeparator();
             _actions.AddAction("Забрать животное из приюта", GetAnimal);
             _actions.AddAction("Отдать животное в приют", AddAnimal);
+
+            _actions.AddSeparator();
             _actions.AddExitProgramAction();
         }
 
