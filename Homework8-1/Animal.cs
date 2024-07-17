@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MyHomeworkToolkit;
+using MyHomeworkToolkit.ObjectSelecting;
 
 namespace Homework8_1
 {
-    internal abstract class Animal
+    internal abstract class Animal : ISelectableObject
     {
-        protected string Name { get; private set; }
+        public string Name { get; private set; }
+
+        public abstract string DisplayedName { get; }
 
         protected Animal(string name)
         {

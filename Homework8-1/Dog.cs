@@ -10,5 +10,7 @@ namespace Homework8_1
     {
         public Dog(string name)
             : base(name) { }
+
+        public override string DisplayedName => $"Собака по кличке [{Name}]";
     }
 }
