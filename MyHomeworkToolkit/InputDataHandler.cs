@@ -71,13 +71,13 @@ namespace MyHomeworkToolkit
 
         #region Digit Input
 
-        public static int GetIntData(string preMessage, Func<object, bool> checker) =>
+        public static int GetIntData(string preMessage, Func<string, bool> checker) =>
             (int)GetData(preMessage, checker);
 
-        public static double GetDoubleData(string preMessage, Func<object, bool> checker) =>
+        public static double GetDoubleData(string preMessage, Func<string, bool> checker) =>
             (double)GetData(preMessage, checker);
 
-        public static decimal GetDecimalData(string preMessage, Func<object, bool> checker) =>
+        public static decimal GetDecimalData(string preMessage, Func<string, bool> checker) =>
             (decimal)GetData(preMessage, checker);
 
         #endregion
