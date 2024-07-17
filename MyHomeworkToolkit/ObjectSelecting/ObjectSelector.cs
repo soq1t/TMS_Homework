@@ -7,11 +7,12 @@ using static MyHomeworkToolkit.ConsoleUtility;
 
 namespace MyHomeworkToolkit.ObjectSelecting
 {
-    public static class ObjectSelector<T>
-        where T : ISelectableObject
+    public static class ObjectSelector<TObject>
+        where TObject : ISelectableObject
     {
-        public static T SelectFromList(List<T> list, Action predicateAction)
+        public static TObject? SelectFromList(List<TObject> list, Action predicateAction)
         {
+            TObject? selectedObject = default;
             Console.Clear();
 
             if (list.Count == 0)
@@ -29,12 +30,12 @@ namespace MyHomeworkToolkit.ObjectSelecting
 
                 WriteLineColored(
                     "[Стрелки вверх - вниз] - Навигация\n[Enter] - Выбор объекта\n[ESC] - Отменить",
-                    ConsoleColor.Yellow
+                    ConsoleColor.DarkYellow
                 );
 
                 int i = 0;
 
-                foreach (T item in list)
+                foreach (TObject item in list)
                 {
                     if (i == selectedIndex)
                         WriteLineColored($"> {item.DisplayedName}", ConsoleColor.Green);
@@ -43,43 +44,66 @@ namespace MyHomeworkToolkit.ObjectSelecting
                     i++;
                 }
 
-                ConsoleKey key;
                 bool isKeyCorrect;
+                bool isObjectSelected = false;
+
                 do
                 {
-                    isKeyCorrect = true;
-                    key = Console.ReadKey(true).Key;
+                    isObjectSelected = ChangeSelectedIndex(
+                        Console.ReadKey(true).Key,
+                        out isKeyCorrect
+                    );
 
-                    switch (key)
-                    {
-                        case ConsoleKey.Escape:
-                            return default;
-                        case ConsoleKey.Enter:
-                            return list.ElementAt(selectedIndex);
-                        case ConsoleKey.DownArrow:
-                            if (selectedIndex >= list.Count - 1)
-                                selectedIndex = 0;
-                            else
-                                selectedIndex++;
-                            break;
-                        case ConsoleKey.UpArrow:
-                            if (selectedIndex == 0)
-                                selectedIndex = list.Count - 1;
-                            else
-                                selectedIndex--;
-                            break;
-                        default:
-                            isKeyCorrect = false;
-                            break;
-                    }
+                    if (isObjectSelected)
+                        return selectedObject;
                 } while (!isKeyCorrect);
+            }
+
+            bool ChangeSelectedIndex(ConsoleKey key, out bool isKeyCorrect)
+            {
+                isKeyCorrect = true;
+                switch (key)
+                {
+                    case ConsoleKey.Escape:
+                        selectedObject = default;
+                        return true;
+                    case ConsoleKey.Enter:
+                        selectedObject = list.ElementAt(selectedIndex);
+                        return true;
+                    case ConsoleKey.DownArrow:
+                        if (selectedIndex >= list.Count - 1)
+                            selectedIndex = 0;
+                        else
+                            selectedIndex++;
+
+                        if (list.ElementAt(selectedIndex).DisplayedName == null)
+                            ChangeSelectedIndex(ConsoleKey.DownArrow, out isKeyCorrect);
+
+                        return false;
+                    case ConsoleKey.UpArrow:
+                        if (selectedIndex == 0)
+                            selectedIndex = list.Count - 1;
+                        else
+                            selectedIndex--;
+
+                        if (list.ElementAt(selectedIndex).DisplayedName == null)
+                            ChangeSelectedIndex(ConsoleKey.UpArrow, out isKeyCorrect);
+
+                        return false;
+                    default:
+                        isKeyCorrect = false;
+                        return false;
+                }
             }
         }
 
-        public static T SelectFromList(List<T> list, string message) =>
+        private static void ChangeSelectedIndex(ConsoleKey key) { }
+
+        public static TObject? SelectFromList(List<TObject> list, string message) =>
             SelectFromList(list, () => DisplayMessage(message));
 
-        public static T SelectFromList(List<T> list) => SelectFromList(list, "Выберите объект:");
+        public static TObject? SelectFromList(List<TObject> list) =>
+            SelectFromList(list, "Выберите объект:");
 
         private static void DisplayMessage(string message)
         {

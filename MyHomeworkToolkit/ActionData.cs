@@ -9,10 +9,10 @@ namespace MyHomeworkToolkit
 {
     internal class ActionData : ISelectableObject
     {
-        public string DisplayedName { get; private set; }
-        internal Action PerformedAction { get; private set; }
+        public string? DisplayedName { get; private set; }
+        internal Action? PerformedAction { get; private set; }
 
-        internal ActionData(string displayedName, Action performedAction)
+        internal ActionData(string? displayedName, Action? performedAction)
         {
             DisplayedName = displayedName;
             PerformedAction = performedAction;
