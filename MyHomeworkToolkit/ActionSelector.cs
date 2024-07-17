@@ -14,6 +14,8 @@ namespace MyHomeworkToolkit
         public void AddExitProgramAction() =>
             AddAction("Выйти из программы", () => Environment.Exit(0));
 
+        public void AddSeparator() => AddAction(null, null);
+
         public void SelectAction(
             Action predicatedAction,
             bool pressKeyAfterActionCompleted = true,
@@ -61,7 +63,7 @@ namespace MyHomeworkToolkit
             bool repeatSelection = true
         ) => SelectAction("Выберите действие:", pressKeyAfterActionCompleted, repeatSelection);
 
-        public void AddAction(string message, Action performedAction)
+        public void AddAction(string? message, Action? performedAction)
         {
             ActionData action = new ActionData(message, performedAction);
             _actions.Add(action);
