@@ -11,6 +11,9 @@ namespace MyHomeworkToolkit
             _actions = new List<ActionData>();
         }
 
+        public void AddExitProgramAction() =>
+            AddAction("Выйти из программы", () => Environment.Exit(0));
+
         public void SelectAction(
             Action predicatedAction,
             bool pressKeyAfterActionCompleted = true,
