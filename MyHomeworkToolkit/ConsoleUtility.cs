@@ -22,5 +22,33 @@ namespace MyHomeworkToolkit
             WriteColored(message, color);
             Console.WriteLine();
         }
+
+        public static void PressToContinue(ConsoleColor color = ConsoleColor.Yellow)
+        {
+            Console.WriteLine();
+            WriteColored("Нажмите любую клавишу для продолжения...", ConsoleColor.Yellow);
+            Console.ReadKey(true);
+        }
+
+        public static void PrintError(
+            string message,
+            ConsoleColor errorColor = ConsoleColor.Red,
+            bool clearBefore = false,
+            bool clearAfter = false
+        )
+        {
+            if (clearBefore)
+                Console.Clear();
+
+            if (string.IsNullOrEmpty(message))
+                WriteLineColored("Ошибка!", errorColor);
+            else
+                WriteLineColored(message, errorColor);
+
+            PressToContinue(errorColor);
+
+            if (clearAfter)
+                Console.Clear();
+        }
     }
 }

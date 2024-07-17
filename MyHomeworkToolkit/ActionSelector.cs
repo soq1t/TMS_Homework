@@ -11,7 +11,11 @@ namespace MyHomeworkToolkit
             _actions = new List<ActionData>();
         }
 
-        public void SelectAction(Action predicatedAction)
+        public void SelectAction(
+            Action predicatedAction,
+            bool pressKeyAfterActionCompleted = true,
+            bool repeatSelection = true
+        )
         {
             object selectedAction = ObjectSelector<ActionData>.SelectFromList(
                 _actions,
@@ -26,18 +30,33 @@ namespace MyHomeworkToolkit
             }
             else
             {
-                ConsoleUtility.WriteLineColored(
-                    "Выбор действия был отменён!\nНажмите любую клавишу для продолжения",
-                    ConsoleColor.Red
-                );
-                Console.ReadKey(true);
-                Console.Clear();
+                ConsoleUtility.WriteLineColored("Выбор действия был отменён!", ConsoleColor.Red);
             }
+
+            if (pressKeyAfterActionCompleted)
+                ConsoleUtility.PressToContinue();
+
+            Console.Clear();
+
+            if (repeatSelection)
+                SelectAction(predicatedAction, pressKeyAfterActionCompleted, repeatSelection);
         }
 
-        public void SelectAction(string message) => SelectAction(() => DisplayMessage(message));
+        public void SelectAction(
+            string message,
+            bool pressKeyAfterActionCompleted = true,
+            bool repeatSelection = true
+        ) =>
+            SelectAction(
+                () => DisplayMessage(message),
+                pressKeyAfterActionCompleted,
+                repeatSelection
+            );
 
-        public void SelectAction() => SelectAction("Выберите действие:");
+        public void SelectAction(
+            bool pressKeyAfterActionCompleted = true,
+            bool repeatSelection = true
+        ) => SelectAction("Выберите действие:", pressKeyAfterActionCompleted, repeatSelection);
 
         public void AddAction(string message, Action performedAction)
         {
