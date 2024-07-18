@@ -8,18 +8,35 @@ namespace MyHomeworkToolkit
 {
     public static class ConsoleUtility
     {
-        public static void WriteColored(string message, ConsoleColor color)
+        public static void WriteColored(
+            string message,
+            ConsoleColor foreground = ConsoleColor.Yellow,
+            ConsoleColor background = ConsoleColor.Black
+        )
         {
-            ConsoleColor current = Console.ForegroundColor;
-            Console.ForegroundColor = color;
+            Encoding currentEncoding = Console.OutputEncoding;
+            Console.OutputEncoding = Encoding.UTF8;
+
+            ConsoleColor currentForeground = Console.ForegroundColor;
+            ConsoleColor currentBackground = Console.BackgroundColor;
+
+            Console.ForegroundColor = foreground;
+            Console.BackgroundColor = background;
 
             Console.Write(message);
-            Console.ForegroundColor = current;
+
+            Console.ForegroundColor = currentForeground;
+            Console.BackgroundColor = currentBackground;
+            Console.OutputEncoding = currentEncoding;
         }
 
-        public static void WriteLineColored(string message, ConsoleColor color)
+        public static void WriteLineColored(
+            string message,
+            ConsoleColor foreground = ConsoleColor.Yellow,
+            ConsoleColor background = ConsoleColor.Black
+        )
         {
-            WriteColored(message, color);
+            WriteColored(message, foreground, background);
             Console.WriteLine();
         }
 
@@ -57,8 +74,11 @@ namespace MyHomeworkToolkit
 
             Console.SetCursorPosition(0, lineIndex);
 
+            StringBuilder emptyString = new StringBuilder();
             for (int i = 0; i < Console.BufferWidth; i++)
-                Console.Write(' ');
+                emptyString.Append(' ');
+
+            Console.Write(emptyString.ToString());
 
             Console.SetCursorPosition(currentPosition.Left, currentPosition.Top);
         }

@@ -17,14 +17,20 @@ namespace MyHomeworkToolkit
         public void AddSeparator(SeparatorType type = SeparatorType.EmptyLine) =>
             _actions.Add(new SelectionSeparator(type));
 
+        #region SelectActionRepeated
         public void SelectActionRepeated(
             Action predicatedAction,
             bool pressKeyAfterActionCompleted = true
         )
         {
+            int selectedActionIndex = 0;
             while (true)
             {
-                SelectAction(predicatedAction, pressKeyAfterActionCompleted);
+                selectedActionIndex = SelectAction(
+                    predicatedAction,
+                    pressKeyAfterActionCompleted,
+                    selectedActionIndex
+                );
             }
         }
 
@@ -35,19 +41,25 @@ namespace MyHomeworkToolkit
 
         public void SelectActionRepeated(bool pressKeyAfterActionCompleted = true) =>
             SelectActionRepeated("Выберите действие:", pressKeyAfterActionCompleted);
+        #endregion
 
-        public void SelectAction(Action predicatedAction, bool pressKeyAfterActionCompleted = true)
+        #region SelectAction
+        public int SelectAction(
+            Action predicatedAction,
+            bool pressKeyAfterActionCompleted = true,
+            int selectedIndex = 0
+        )
         {
-            object? selectedAction = ObjectSelector<ActionData>.SelectFromList(
+            ActionData? selectedAction = ObjectSelector<ActionData>.SelectFromList(
                 _actions,
-                predicatedAction
+                predicatedAction,
+                selectedIndex
             );
 
             Console.Clear();
             if (selectedAction != null)
             {
-                ActionData action = (ActionData)selectedAction;
-                action.PerformedAction.Invoke();
+                selectedAction.PerformedAction?.Invoke();
             }
             else
             {
@@ -58,14 +70,27 @@ namespace MyHomeworkToolkit
                 ConsoleUtility.PressToContinue();
 
             Console.Clear();
+
+            if (selectedAction == null)
+                return -1;
+            else
+                return _actions.IndexOf(selectedAction);
         }
 
-        public void SelectAction(string message, bool pressKeyAfterActionCompleted = true) =>
-            SelectAction(() => DisplayMessage(message), pressKeyAfterActionCompleted);
+        public int SelectAction(
+            string message,
+            bool pressKeyAfterActionCompleted = true,
+            int selectedIndex = 0
+        ) =>
+            SelectAction(
+                () => DisplayMessage(message),
+                pressKeyAfterActionCompleted,
+                selectedIndex
+            );
 
-        public void SelectAction(bool pressKeyAfterActionCompleted = true) =>
-            SelectAction("Выберите действие:", pressKeyAfterActionCompleted);
-
+        public int SelectAction(bool pressKeyAfterActionCompleted = true, int selectedIndex = 0) =>
+            SelectAction("Выберите действие:", pressKeyAfterActionCompleted, selectedIndex);
+        #endregion
         public void AddAction(string? message, Action? performedAction)
         {
             ActionData action = new ActionData(message, performedAction);
