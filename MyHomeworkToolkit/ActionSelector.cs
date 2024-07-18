@@ -14,7 +14,8 @@ namespace MyHomeworkToolkit
         public void AddExitProgramAction() =>
             AddAction("Выйти из программы", () => Environment.Exit(0));
 
-        public void AddSeparator() => AddAction(null, null);
+        public void AddSeparator(SeparatorType type = SeparatorType.EmptyLine) =>
+            _actions.Add(new SelectionSeparator(type));
 
         public void SelectActionRepeated(
             Action predicatedAction,

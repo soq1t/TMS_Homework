@@ -76,7 +76,8 @@ namespace MyHomeworkToolkit.ObjectSelecting
                         else
                             selectedIndex++;
 
-                        if (list.ElementAt(selectedIndex).DisplayedName == null)
+                        //if (list.ElementAt(selectedIndex).DisplayedName == null)
+                        if (list.ElementAt(selectedIndex) is SelectionSeparator)
                             ChangeSelectedIndex(ConsoleKey.DownArrow, out isKeyCorrect);
 
                         return false;
@@ -86,7 +87,8 @@ namespace MyHomeworkToolkit.ObjectSelecting
                         else
                             selectedIndex--;
 
-                        if (list.ElementAt(selectedIndex).DisplayedName == null)
+                        //if (list.ElementAt(selectedIndex).DisplayedName == null)
+                        if (list.ElementAt(selectedIndex) is SelectionSeparator)
                             ChangeSelectedIndex(ConsoleKey.UpArrow, out isKeyCorrect);
 
                         return false;

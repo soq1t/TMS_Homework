@@ -50,5 +50,19 @@ namespace MyHomeworkToolkit
             if (clearAfter)
                 Console.Clear();
         }
+
+        public static void ClearLine(int lineIndex)
+        {
+            (int Left, int Top) currentPosition = Console.GetCursorPosition();
+
+            Console.SetCursorPosition(0, lineIndex);
+
+            for (int i = 0; i < Console.BufferWidth; i++)
+                Console.Write(' ');
+
+            Console.SetCursorPosition(currentPosition.Left, currentPosition.Top);
+        }
+
+        public static void ClearLine() => ClearLine(Console.CursorTop);
     }
 }
