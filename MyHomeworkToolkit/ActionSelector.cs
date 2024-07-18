@@ -47,7 +47,7 @@ namespace MyHomeworkToolkit
             if (selectedAction != null)
             {
                 ActionData action = (ActionData)selectedAction;
-                action.PerformedAction.Invoke();
+                action.PerformedAction?.Invoke();
             }
             else
             {

@@ -22,27 +22,25 @@ namespace MyHomeworkToolkit.ObjectSelecting
             }
 
             int selectedIndex = 0;
+            predicateAction?.Invoke();
+            Console.WriteLine();
+
+            int listBeginningLine = Console.CursorTop;
+            PrintObjectsList(listBeginningLine);
+
+            Console.WriteLine();
+            WriteLineColored(
+                "[\u2193] [\u2191] - Навигация\n[Enter] - Выбор объекта\n[ESC] - Отменить",
+                ConsoleColor.DarkYellow
+            );
+
+            (int Left, int Top) currentPosition = Console.GetCursorPosition();
 
             while (true)
             {
-                Console.Clear();
-                predicateAction?.Invoke();
+                //Console.Clear();
 
-                WriteLineColored(
-                    "[Стрелки вверх - вниз] - Навигация\n[Enter] - Выбор объекта\n[ESC] - Отменить",
-                    ConsoleColor.DarkYellow
-                );
-
-                int i = 0;
-
-                foreach (TObject item in list)
-                {
-                    if (i == selectedIndex)
-                        WriteLineColored($"> {item.DisplayedName}", ConsoleColor.Green);
-                    else
-                        WriteLineColored(item.DisplayedName, ConsoleColor.Cyan);
-                    i++;
-                }
+                PrintObjectsList(listBeginningLine);
 
                 bool isKeyCorrect;
                 bool isObjectSelected = false;
@@ -55,7 +53,10 @@ namespace MyHomeworkToolkit.ObjectSelecting
                     );
 
                     if (isObjectSelected)
+                    {
+                        Console.SetCursorPosition(currentPosition.Left, currentPosition.Top);
                         return selectedObject;
+                    }
                 } while (!isKeyCorrect);
             }
 
@@ -95,6 +96,22 @@ namespace MyHomeworkToolkit.ObjectSelecting
                     default:
                         isKeyCorrect = false;
                         return false;
+                }
+            }
+
+            void PrintObjectsList(int consoleLineIndex)
+            {
+                Console.SetCursorPosition(0, consoleLineIndex);
+                int i = 0;
+
+                foreach (TObject item in list)
+                {
+                    ClearLine();
+                    if (i == selectedIndex)
+                        WriteLineColored($"> {item.DisplayedName}", ConsoleColor.Green);
+                    else
+                        WriteLineColored(item.DisplayedName, ConsoleColor.Cyan);
+                    i++;
                 }
             }
         }
