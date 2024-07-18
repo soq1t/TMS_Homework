@@ -8,8 +8,15 @@ namespace MyHomeworkToolkit
 {
     public static class ConsoleUtility
     {
+        #region Вывод текста на консоль
+        /// <summary>
+        /// Выводит в консоль заданную строку
+        /// </summary>
+        /// <param name="obj">Выводимый в консоль объект (obj?.ToString() ?? string.Empty)</param>
+        /// <param name="foreground">Цвет выводимого текста</param>
+        /// <param name="background">Цвет фона выводимого текста</param>
         public static void WriteColored(
-            string message,
+            object? message,
             ConsoleColor foreground = ConsoleColor.Yellow,
             ConsoleColor background = ConsoleColor.Black
         )
@@ -23,7 +30,7 @@ namespace MyHomeworkToolkit
             Console.ForegroundColor = foreground;
             Console.BackgroundColor = background;
 
-            Console.Write(message);
+            Console.Write(message?.ToString() ?? string.Empty);
 
             Console.ForegroundColor = currentForeground;
             Console.BackgroundColor = currentBackground;
@@ -31,7 +38,7 @@ namespace MyHomeworkToolkit
         }
 
         public static void WriteLineColored(
-            string message,
+            object? message,
             ConsoleColor foreground = ConsoleColor.Yellow,
             ConsoleColor background = ConsoleColor.Black
         )
@@ -40,6 +47,24 @@ namespace MyHomeworkToolkit
             Console.WriteLine();
         }
 
+        public static void WriteColored(params Colored[] messages)
+        {
+            if (messages.Length > 0)
+            {
+                foreach (Colored message in messages)
+                    WriteColored(message.Message, message.Foreground, message.Background);
+            }
+        }
+
+        public static void WriteLineColored(params Colored[] messages)
+        {
+            WriteColored(messages);
+            Console.WriteLine();
+        }
+
+        #endregion
+
+        #region Остальные методы работы с консолью
         public static void PressToContinue(ConsoleColor color = ConsoleColor.Yellow)
         {
             Console.WriteLine();
@@ -84,5 +109,6 @@ namespace MyHomeworkToolkit
         }
 
         public static void ClearLine() => ClearLine(Console.CursorTop);
+        #endregion
     }
 }
