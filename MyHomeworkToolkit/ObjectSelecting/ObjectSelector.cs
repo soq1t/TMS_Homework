@@ -10,7 +10,11 @@ namespace MyHomeworkToolkit.ObjectSelecting
     public static class ObjectSelector<TObject>
         where TObject : ISelectableObject
     {
-        public static TObject? SelectFromList(List<TObject> list, Action predicateAction)
+        public static TObject? SelectFromList(
+            List<TObject> list,
+            Action predicateAction,
+            int selectedIndex = 0
+        )
         {
             TObject? selectedObject = default;
             Console.Clear();
@@ -21,17 +25,15 @@ namespace MyHomeworkToolkit.ObjectSelecting
                 return default;
             }
 
-            int selectedIndex = 0;
             predicateAction?.Invoke();
-            Console.WriteLine();
 
             int listBeginningLine = Console.CursorTop;
             PrintObjectsList(listBeginningLine);
 
             Console.WriteLine();
             WriteLineColored(
-                "[\u2193] [\u2191] - Навигация\n[Enter] - Выбор объекта\n[ESC] - Отменить",
-                ConsoleColor.DarkYellow
+                "[\u2191] [\u2193] - Навигация\n[Enter] - Выбор объекта\n[ESC] - Отменить",
+                ConsoleColor.Yellow
             );
 
             (int Left, int Top) currentPosition = Console.GetCursorPosition();
@@ -41,6 +43,7 @@ namespace MyHomeworkToolkit.ObjectSelecting
                 //Console.Clear();
 
                 PrintObjectsList(listBeginningLine);
+                Console.SetCursorPosition(currentPosition.Left, currentPosition.Top);
 
                 bool isKeyCorrect;
                 bool isObjectSelected = false;
@@ -53,10 +56,7 @@ namespace MyHomeworkToolkit.ObjectSelecting
                     );
 
                     if (isObjectSelected)
-                    {
-                        Console.SetCursorPosition(currentPosition.Left, currentPosition.Top);
                         return selectedObject;
-                    }
                 } while (!isKeyCorrect);
             }
 
@@ -108,7 +108,11 @@ namespace MyHomeworkToolkit.ObjectSelecting
                 {
                     ClearLine();
                     if (i == selectedIndex)
-                        WriteLineColored($"> {item.DisplayedName}", ConsoleColor.Green);
+                        WriteLineColored(
+                            $" > {item.DisplayedName} < ",
+                            ConsoleColor.DarkMagenta,
+                            ConsoleColor.Yellow
+                        );
                     else
                         WriteLineColored(item.DisplayedName, ConsoleColor.Cyan);
                     i++;
