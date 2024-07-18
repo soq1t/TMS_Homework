@@ -53,8 +53,10 @@ namespace Homework8_4a.Models
             if (_documents.Any(d => d != null))
             {
                 Document? document = ObjectSelector<Document>.SelectFromList(
-                    _documents.Where(d => d != null).ToList()
+                    _documents.Where(d => d != null).ToList(),
+                    "Выберите документ из списка:"
                 );
+                Console.WriteLine();
                 document?.PrintInfo();
 
                 return document != null;
@@ -74,6 +76,10 @@ namespace Homework8_4a.Models
             ConsoleUtility.WriteLineColored(
                 new Colored("Реестр №", ConsoleColor.Yellow),
                 new Colored(_registerId, ConsoleColor.Green)
+            );
+            ConsoleUtility.WriteLineColored(
+                new Colored("Количество документов в реестре: ", ConsoleColor.Cyan),
+                new Colored(_documents.Where(d => d != null).Count(), ConsoleColor.Green)
             );
         }
     }

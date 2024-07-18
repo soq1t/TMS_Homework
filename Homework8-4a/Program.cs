@@ -20,9 +20,30 @@ namespace Homework8_4a
             _actions.AddSeparator();
             _actions.AddExitProgramAction();
 
+            _actions.SelectionAborted += () =>
+            {
+                _actions.AbortSelectActionRepeated();
+                ConsoleUtility.WriteLineColored("Завершение программы...", ConsoleColor.Yellow);
+                ConsoleUtility.PressToContinue();
+                Environment.Exit(0);
+            };
+
             _registerActions = new ActionSelector();
             _registerActions.AddAction("Показать информацию о документе", PrintDocumentInfo);
-            _registerActions.AddAction("Вернуться к выбору реестров", () => { });
+            _registerActions.AddAction(
+                "Вернуться к выбору реестров",
+                _registerActions.AbortSelectActionRepeated
+            );
+
+            _registerActions.SelectionAborted += () =>
+            {
+                _registerActions.AbortSelectActionRepeated();
+                ConsoleUtility.WriteLineColored(
+                    "Возвращаемся к выбору реестров",
+                    ConsoleColor.Yellow
+                );
+                ConsoleUtility.PressToContinue();
+            };
 
             _registers[0].AddDocument(new Contract("Василий", new DateOnly(2024, 07, 10)));
             _registers[0].AddDocument(new Financial());
@@ -40,6 +61,21 @@ namespace Homework8_4a
             _registers[2].AddDocument(new GoodsDocument());
         }
 
+        static void Main(string[] args)
+        {
+            _actions.SelectActionRepeated(PrintMainMessage, pressKeyAfterActionCompleted: false);
+        }
+
+        private static void PrintMainMessage()
+        {
+            ConsoleUtility.WriteLineColored(
+                new Colored("Количество реестров: ", ConsoleColor.Yellow),
+                new Colored(_registers.Length, ConsoleColor.Green)
+            );
+            Console.WriteLine();
+            ConsoleUtility.WriteLineColored("Выберите желаемое действие:");
+        }
+
         private static void PrintDocumentInfo()
         {
             bool isDocumentSelected = true;
@@ -54,25 +90,24 @@ namespace Homework8_4a
         private static void PrintRegisterMessage()
         {
             _selectetRegister?.PrintRegisterInfo();
-            ConsoleUtility.WriteLineColored("Выберите действие", ConsoleColor.Yellow);
+            Console.WriteLine();
+            ConsoleUtility.WriteLineColored("Выберите дальнейшее действие:", ConsoleColor.Yellow);
         }
 
         private static void ChooseRegister()
         {
-            _selectetRegister = ObjectSelector<Register>.SelectFromList(_registers.ToList());
+            _selectetRegister = ObjectSelector<Register>.SelectFromList(
+                _registers.ToList(),
+                PrintMainMessage
+            );
 
             if (_selectetRegister != null)
             {
-                _registerActions.SelectAction(
+                _registerActions.SelectActionRepeated(
                     PrintRegisterMessage,
                     pressKeyAfterActionCompleted: false
                 );
             }
-        }
-
-        static void Main(string[] args)
-        {
-            _actions.SelectActionRepeated(pressKeyAfterActionCompleted: false);
         }
     }
 }
