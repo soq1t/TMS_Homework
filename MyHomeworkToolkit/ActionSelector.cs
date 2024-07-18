@@ -4,7 +4,10 @@ namespace MyHomeworkToolkit
 {
     public class ActionSelector
     {
+        public event Action SelectionAborted;
+
         private List<ActionData> _actions;
+        private bool _stopLoop;
 
         public ActionSelector()
         {
@@ -18,6 +21,9 @@ namespace MyHomeworkToolkit
             _actions.Add(new SelectionSeparator(type));
 
         #region SelectActionRepeated
+
+        public void AbortSelectActionRepeated() => _stopLoop = true;
+
         public void SelectActionRepeated(
             Action predicatedAction,
             bool pressKeyAfterActionCompleted = true
@@ -26,6 +32,11 @@ namespace MyHomeworkToolkit
             int selectedActionIndex = 0;
             while (true)
             {
+                if (_stopLoop)
+                {
+                    _stopLoop = false;
+                    break;
+                }
                 selectedActionIndex = SelectAction(
                     predicatedAction,
                     pressKeyAfterActionCompleted,
@@ -64,6 +75,7 @@ namespace MyHomeworkToolkit
             else
             {
                 ConsoleUtility.WriteLineColored("Выбор действия был отменён!", ConsoleColor.Red);
+                SelectionAborted?.Invoke();
             }
 
             if (pressKeyAfterActionCompleted)
