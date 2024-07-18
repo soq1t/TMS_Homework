@@ -25,42 +25,6 @@ namespace MyHomeworkToolkit
             return input;
         }
 
-        //private static object GetDigitData(string preMessage, Func<string, bool> checker)
-        //{
-        //    bool isDataCorrect = true;
-        //    string input;
-
-        //    do
-        //    {
-        //        ConsoleUtility.WriteLineColored(preMessage, ConsoleColor.Yellow);
-        //        input = Console.ReadLine();
-
-        //        if (!IsDigit(input))
-        //        {
-        //            PrintError("Вводмиое значение должно быть числом!");
-        //            continue;
-        //        }
-
-        //        isDataCorrect = checker.Invoke(input);
-        //        Console.WriteLine();
-        //    } while (!isDataCorrect);
-
-        //    return input;
-
-        //    bool IsDigit(string value)
-        //    {
-        //        if (Int32.TryParse(value, out int @int))
-        //            return true;
-
-        //        if (double.TryParse(value, out double @double))
-        //            return true;
-
-        //        if (decimal.TryParse(value, out decimal @decimal))
-        //            return true;
-        //        return false;
-        //    }
-        //}
-
         #region Text Input
         public static string? GetTextData(string preMessage, Func<string, bool> checker) =>
             GetData(preMessage, checker) as string;

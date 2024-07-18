@@ -16,33 +16,28 @@ namespace MyHomeworkToolkit
 
         public void AddSeparator() => AddAction(null, null);
 
-        public void SelectActionRepeated(Action predicatedAction, bool pressKeyAfterActionCompleted = true)
-        {
-            while (true) 
-            {
-                SelectAction(predicatedAction, pressKeyAfterActionCompleted);
-            }
-        }
-        
         public void SelectActionRepeated(
-            string message,
-            bool pressKeyAfterActionCompleted = true
-        ) =>
-            SelectActionRepeated(
-                () => DisplayMessage(message),
-                pressKeyAfterActionCompleted
-            );
-            
-        public void SelectActionRepeated(
-            bool pressKeyAfterActionCompleted = true
-        ) => SelectActionRepeated("Выберите действие:", pressKeyAfterActionCompleted);
-
-        public void SelectAction(
             Action predicatedAction,
             bool pressKeyAfterActionCompleted = true
         )
         {
-            object selectedAction = ObjectSelector<ActionData>.SelectFromList(
+            while (true)
+            {
+                SelectAction(predicatedAction, pressKeyAfterActionCompleted);
+            }
+        }
+
+        public void SelectActionRepeated(
+            string message,
+            bool pressKeyAfterActionCompleted = true
+        ) => SelectActionRepeated(() => DisplayMessage(message), pressKeyAfterActionCompleted);
+
+        public void SelectActionRepeated(bool pressKeyAfterActionCompleted = true) =>
+            SelectActionRepeated("Выберите действие:", pressKeyAfterActionCompleted);
+
+        public void SelectAction(Action predicatedAction, bool pressKeyAfterActionCompleted = true)
+        {
+            object? selectedAction = ObjectSelector<ActionData>.SelectFromList(
                 _actions,
                 predicatedAction
             );
@@ -64,18 +59,11 @@ namespace MyHomeworkToolkit
             Console.Clear();
         }
 
-        public void SelectAction(
-            string message,
-            bool pressKeyAfterActionCompleted = true
-        ) =>
-            SelectAction(
-                () => DisplayMessage(message),
-                pressKeyAfterActionCompleted
-            );
+        public void SelectAction(string message, bool pressKeyAfterActionCompleted = true) =>
+            SelectAction(() => DisplayMessage(message), pressKeyAfterActionCompleted);
 
-        public void SelectAction(
-            bool pressKeyAfterActionCompleted = true
-        ) => SelectAction("Выберите действие:", pressKeyAfterActionCompleted);
+        public void SelectAction(bool pressKeyAfterActionCompleted = true) =>
+            SelectAction("Выберите действие:", pressKeyAfterActionCompleted);
 
         public void AddAction(string? message, Action? performedAction)
         {
