@@ -8,6 +8,6 @@ namespace MyHomeworkToolkit.ObjectSelecting
 {
     public interface ISelectableObject
     {
-        public string DisplayedName { get; }
+        public string? DisplayedName { get; }
     }
 }
