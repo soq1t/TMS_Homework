@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,41 +24,6 @@ namespace MyHomeworkToolkit
 
             return input;
         }
-        //private static object GetDigitData(string preMessage, Func<string, bool> checker)
-        //{
-        //    bool isDataCorrect = true;
-        //    string input;
-
-        //    do
-        //    {
-        //        ConsoleUtility.WriteLineColored(preMessage, ConsoleColor.Yellow);
-        //        input = Console.ReadLine();
-
-        //        if (!IsDigit(input))
-        //        {
-        //            PrintError("Вводмиое значение должно быть числом!");
-        //            continue;
-        //        }
-
-        //        isDataCorrect = checker.Invoke(input);
-        //        Console.WriteLine();
-        //    } while (!isDataCorrect);
-
-        //    return input;
-
-        //    bool IsDigit(string value)
-        //    {
-        //        if (Int32.TryParse(value, out int @int))
-        //            return true;
-
-        //        if (double.TryParse(value, out double @double))
-        //            return true;
-
-        //        if (decimal.TryParse(value, out decimal @decimal))
-        //            return true;
-        //        return false;
-        //    }
-        //}
 
         #region Text Input
         public static string? GetTextData(string preMessage, Func<string, bool> checker) =>
@@ -70,13 +35,13 @@ namespace MyHomeworkToolkit
 
         #region Digit Input
 
-        public static int GetIntData(string preMessage, Func<object, bool> checker) =>
+        public static int GetIntData(string preMessage, Func<string, bool> checker) =>
             (int)GetData(preMessage, checker);
 
-        public static double GetDoubleData(string preMessage, Func<object, bool> checker) =>
+        public static double GetDoubleData(string preMessage, Func<string, bool> checker) =>
             (double)GetData(preMessage, checker);
 
-        public static decimal GetDecimalData(string preMessage, Func<object, bool> checker) =>
+        public static decimal GetDecimalData(string preMessage, Func<string, bool> checker) =>
             (decimal)GetData(preMessage, checker);
 
         #endregion

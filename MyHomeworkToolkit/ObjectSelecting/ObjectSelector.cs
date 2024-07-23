@@ -10,7 +10,11 @@ namespace MyHomeworkToolkit.ObjectSelecting
     public static class ObjectSelector<TObject>
         where TObject : ISelectableObject
     {
-        public static TObject? SelectFromList(List<TObject> list, Action predicateAction)
+        public static TObject? SelectFromList(
+            List<TObject> list,
+            Action predicateAction,
+            int selectedIndex = 0
+        )
         {
             TObject? selectedObject = default;
             Console.Clear();
@@ -21,28 +25,25 @@ namespace MyHomeworkToolkit.ObjectSelecting
                 return default;
             }
 
-            int selectedIndex = 0;
+            predicateAction?.Invoke();
+
+            int listBeginningLine = Console.CursorTop;
+            PrintObjectsList(listBeginningLine);
+
+            Console.WriteLine();
+            WriteLineColored(
+                "[\u2191] [\u2193] - Навигация\n[Enter] - Выбор объекта\n[ESC] - Отменить",
+                ConsoleColor.Yellow
+            );
+
+            (int Left, int Top) currentPosition = Console.GetCursorPosition();
 
             while (true)
             {
-                Console.Clear();
-                predicateAction?.Invoke();
+                //Console.Clear();
 
-                WriteLineColored(
-                    "[Стрелки вверх - вниз] - Навигация\n[Enter] - Выбор объекта\n[ESC] - Отменить",
-                    ConsoleColor.DarkYellow
-                );
-
-                int i = 0;
-
-                foreach (TObject item in list)
-                {
-                    if (i == selectedIndex)
-                        WriteLineColored($"> {item.DisplayedName}", ConsoleColor.Green);
-                    else
-                        WriteLineColored(item.DisplayedName, ConsoleColor.Cyan);
-                    i++;
-                }
+                PrintObjectsList(listBeginningLine);
+                Console.SetCursorPosition(currentPosition.Left, currentPosition.Top);
 
                 bool isKeyCorrect;
                 bool isObjectSelected = false;
@@ -76,7 +77,8 @@ namespace MyHomeworkToolkit.ObjectSelecting
                         else
                             selectedIndex++;
 
-                        if (list.ElementAt(selectedIndex).DisplayedName == null)
+                        //if (list.ElementAt(selectedIndex).DisplayedName == null)
+                        if (list.ElementAt(selectedIndex) is SelectionSeparator)
                             ChangeSelectedIndex(ConsoleKey.DownArrow, out isKeyCorrect);
 
                         return false;
@@ -86,13 +88,34 @@ namespace MyHomeworkToolkit.ObjectSelecting
                         else
                             selectedIndex--;
 
-                        if (list.ElementAt(selectedIndex).DisplayedName == null)
+                        //if (list.ElementAt(selectedIndex).DisplayedName == null)
+                        if (list.ElementAt(selectedIndex) is SelectionSeparator)
                             ChangeSelectedIndex(ConsoleKey.UpArrow, out isKeyCorrect);
 
                         return false;
                     default:
                         isKeyCorrect = false;
                         return false;
+                }
+            }
+
+            void PrintObjectsList(int consoleLineIndex)
+            {
+                Console.SetCursorPosition(0, consoleLineIndex);
+                int i = 0;
+
+                foreach (TObject item in list)
+                {
+                    ClearLine();
+                    if (i == selectedIndex)
+                        WriteLineColored(
+                            $" > {item.DisplayedName} < ",
+                            ConsoleColor.DarkMagenta,
+                            ConsoleColor.Yellow
+                        );
+                    else
+                        WriteLineColored(item.DisplayedName, ConsoleColor.Cyan);
+                    i++;
                 }
             }
         }

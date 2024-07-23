@@ -14,24 +14,52 @@ namespace MyHomeworkToolkit
         public void AddExitProgramAction() =>
             AddAction("Выйти из программы", () => Environment.Exit(0));
 
-        public void AddSeparator() => AddAction(null, null);
+        public void AddSeparator(SeparatorType type = SeparatorType.EmptyLine) =>
+            _actions.Add(new SelectionSeparator(type));
 
-        public void SelectAction(
+        #region SelectActionRepeated
+        public void SelectActionRepeated(
             Action predicatedAction,
-            bool pressKeyAfterActionCompleted = true,
-            bool repeatSelection = true
+            bool pressKeyAfterActionCompleted = true
         )
         {
-            object selectedAction = ObjectSelector<ActionData>.SelectFromList(
+            int selectedActionIndex = 0;
+            while (true)
+            {
+                selectedActionIndex = SelectAction(
+                    predicatedAction,
+                    pressKeyAfterActionCompleted,
+                    selectedActionIndex
+                );
+            }
+        }
+
+        public void SelectActionRepeated(
+            string message,
+            bool pressKeyAfterActionCompleted = true
+        ) => SelectActionRepeated(() => DisplayMessage(message), pressKeyAfterActionCompleted);
+
+        public void SelectActionRepeated(bool pressKeyAfterActionCompleted = true) =>
+            SelectActionRepeated("Выберите действие:", pressKeyAfterActionCompleted);
+        #endregion
+
+        #region SelectAction
+        public int SelectAction(
+            Action predicatedAction,
+            bool pressKeyAfterActionCompleted = true,
+            int selectedIndex = 0
+        )
+        {
+            ActionData? selectedAction = ObjectSelector<ActionData>.SelectFromList(
                 _actions,
-                predicatedAction
+                predicatedAction,
+                selectedIndex
             );
 
             Console.Clear();
             if (selectedAction != null)
             {
-                ActionData action = (ActionData)selectedAction;
-                action.PerformedAction.Invoke();
+                selectedAction.PerformedAction?.Invoke();
             }
             else
             {
@@ -43,26 +71,26 @@ namespace MyHomeworkToolkit
 
             Console.Clear();
 
-            if (repeatSelection)
-                SelectAction(predicatedAction, pressKeyAfterActionCompleted, repeatSelection);
+            if (selectedAction == null)
+                return -1;
+            else
+                return _actions.IndexOf(selectedAction);
         }
 
-        public void SelectAction(
+        public int SelectAction(
             string message,
             bool pressKeyAfterActionCompleted = true,
-            bool repeatSelection = true
+            int selectedIndex = 0
         ) =>
             SelectAction(
                 () => DisplayMessage(message),
                 pressKeyAfterActionCompleted,
-                repeatSelection
+                selectedIndex
             );
 
-        public void SelectAction(
-            bool pressKeyAfterActionCompleted = true,
-            bool repeatSelection = true
-        ) => SelectAction("Выберите действие:", pressKeyAfterActionCompleted, repeatSelection);
-
+        public int SelectAction(bool pressKeyAfterActionCompleted = true, int selectedIndex = 0) =>
+            SelectAction("Выберите действие:", pressKeyAfterActionCompleted, selectedIndex);
+        #endregion
         public void AddAction(string? message, Action? performedAction)
         {
             ActionData action = new ActionData(message, performedAction);
