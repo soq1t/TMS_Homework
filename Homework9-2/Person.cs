@@ -69,7 +69,7 @@ namespace Homework9_2
         public Person(int age)
             : this(null, age) { }
 
-        private void Say(string message) =>
+        protected void Say(string message) =>
             ConsoleUtility.WriteLineColored(
                 new Colored($"[{Name}]: ", ConsoleColor.Green),
                 new Colored(message, ConsoleColor.Yellow)
