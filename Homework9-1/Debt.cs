@@ -40,7 +40,8 @@ namespace Homework9_1
             _interestRate = initialInterestRate;
         }
 
-        public void PrintBalance() =>
+        public void PrintBalance()
+        {
             ConsoleUtility.WriteLineColored(
                 new Colored("Баланс составляет: ", ConsoleColor.Cyan),
                 new Colored(
@@ -48,13 +49,26 @@ namespace Homework9_1
                     Balance > 0 ? ConsoleColor.Green : ConsoleColor.Red
                 )
             );
+        }
 
-        void Wait(int years = 1)
+        public void Wait(int years = 1)
         {
+            ConsoleUtility.WriteLineColored(
+                new Colored("Прошло ", ConsoleColor.Yellow),
+                new Colored(years, ConsoleColor.Blue),
+                new Colored(" лет...", ConsoleColor.Yellow)
+            );
+            double lastBalance = _balance;
+
             for (int i = 0; i < years; i++)
             {
                 Balance *= InterestRate;
             }
+
+            ConsoleUtility.WriteLineColored(
+                new Colored("По долгу было добавлено: ", ConsoleColor.Yellow),
+                new Colored(string.Format("{0:C2}", Balance - lastBalance), ConsoleColor.DarkCyan)
+            );
         }
     }
 }
