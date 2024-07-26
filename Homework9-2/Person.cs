@@ -42,7 +42,7 @@ namespace Homework9_2
             get => _name;
             private set
             {
-                if (string.IsNullOrEmpty(_name))
+                if (string.IsNullOrEmpty(value))
                     ConsoleUtility.PrintError("Имя не может быть пустым!");
                 else
                     _name = value;
@@ -54,7 +54,7 @@ namespace Homework9_2
             get => _age;
             private set
             {
-                if (_age < 0)
+                if (value < 0)
                     ConsoleUtility.PrintError("Возраст не может быть отрицательным значением!");
                 else
                     _age = value;
@@ -65,6 +65,13 @@ namespace Homework9_2
         {
             Name = !string.IsNullOrEmpty(name) ? name : "Аноним";
             Age = age > 0 ? age : 0;
+
+            ConsoleUtility.WriteLineColored(
+                new Colored("К нам пришёл "),
+                new Colored(_personTypeMapper[GetType()], ConsoleColor.Blue),
+                new Colored(" , которого(ю) звать "),
+                new Colored(Name, ConsoleColor.Green)
+            );
         }
 
         public Person()
