@@ -8,7 +8,7 @@ namespace MyHomeworkToolkit
 {
     public static class InputDataHandler
     {
-        private static object GetData(string preMessage, Func<string, bool> checker)
+        private static string GetData(string preMessage, Func<string, bool> checker)
         {
             bool isDataCorrect = true;
             string input;
@@ -36,13 +36,13 @@ namespace MyHomeworkToolkit
         #region Digit Input
 
         public static int GetIntData(string preMessage, Func<string, bool> checker) =>
-            (int)GetData(preMessage, checker);
+            Int32.Parse(GetData(preMessage, checker));
 
         public static double GetDoubleData(string preMessage, Func<string, bool> checker) =>
-            (double)GetData(preMessage, checker);
+            Double.Parse(GetData(preMessage, checker));
 
         public static decimal GetDecimalData(string preMessage, Func<string, bool> checker) =>
-            (decimal)GetData(preMessage, checker);
+            Decimal.Parse(GetData(preMessage, checker));
 
         #endregion
 
