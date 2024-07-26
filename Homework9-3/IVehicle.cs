@@ -8,7 +8,7 @@ namespace Homework9_3
 {
     internal interface IVehicle
     {
-        void Drive();
+        void Drive(int distance);
 
         bool Refuel(int fuelAmount);
     }
