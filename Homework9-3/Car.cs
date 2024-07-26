@@ -26,7 +26,7 @@ namespace Homework9_3
                     "Количество топлива не может быть отрицательным! Будет установлено значение 0"
                 );
             else
-                _fuel = initFuel;
+                _fuel = initFuel <= tankCapacity ? initFuel : tankCapacity;
 
             if (consumption <= 0)
             {
@@ -43,6 +43,12 @@ namespace Homework9_3
 
         public void Drive(int distance)
         {
+            PrintFuel();
+            ConsoleUtility.WriteLineColored(
+                new Colored("Бензина хватит на "),
+                new Colored(_fuel / _consumption, ConsoleColor.Blue),
+                new Colored(" км")
+            );
             for (int i = 1; i <= distance; i++)
             {
                 if (_fuel - _consumption < 0)
@@ -90,11 +96,19 @@ namespace Homework9_3
                     new Colored(" л")
                 );
                 _fuel++;
-                Thread.Sleep(500);
+                Thread.Sleep(50);
             }
 
-            ConsoleUtility.WriteColored("Автомобиль был заправлен!", ConsoleColor.Green);
+            ConsoleUtility.WriteLineColored("Автомобиль был заправлен!", ConsoleColor.Green);
+            PrintFuel();
             return true;
         }
+
+        public void PrintFuel() =>
+            ConsoleUtility.WriteLineColored(
+                new Colored("Кол-во бензина в авто: ", ConsoleColor.Cyan),
+                new Colored(_fuel, ConsoleColor.Green),
+                new Colored(" л", ConsoleColor.Cyan)
+            );
     }
 }
