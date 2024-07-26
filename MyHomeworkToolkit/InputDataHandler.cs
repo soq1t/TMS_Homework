@@ -47,14 +47,14 @@ namespace MyHomeworkToolkit
         #endregion
 
         #region Default Checkers
-        private static bool PrintError(string message)
+        public static bool PrintError(string message)
         {
             ConsoleUtility.WriteLineColored(message, ConsoleColor.Red);
             Console.WriteLine();
             return false;
         }
 
-        private static bool NotEmptyStringChecker(string value)
+        public static bool NotEmptyStringChecker(string value)
         {
             if (string.IsNullOrEmpty(value))
                 return PrintError("Вводимая строка не должна быть пустой!");
@@ -62,7 +62,7 @@ namespace MyHomeworkToolkit
             return true;
         }
 
-        private static bool MoreThanZeroChecker(string value)
+        public static bool MoreThanZeroChecker(string value)
         {
             if (Int32.TryParse(value.Trim(), out int @int))
             {
