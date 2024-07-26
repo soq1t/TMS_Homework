@@ -9,6 +9,13 @@ namespace Homework9_2
 {
     internal class Person
     {
+        private Dictionary<Type, string> _personTypeMapper = new Dictionary<Type, string>()
+        {
+            { typeof(Person), "Человек" },
+            { typeof(Teacher), "Преподаватель" },
+            { typeof(Student), "Студент" },
+        };
+
         private static List<string> _greetings = new List<string>()
         {
             "Привет!",
@@ -71,7 +78,7 @@ namespace Homework9_2
 
         protected void Say(string message) =>
             ConsoleUtility.WriteLineColored(
-                new Colored($"[{Name}]: ", ConsoleColor.Green),
+                new Colored($"[{_personTypeMapper[GetType()]} {Name}]: ", ConsoleColor.Green),
                 new Colored(message, ConsoleColor.Yellow)
             );
 
