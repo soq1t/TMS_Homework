@@ -8,7 +8,7 @@ namespace MyHomeworkToolkit
 {
     public static class InputDataHandler
     {
-        private static object GetData(string preMessage, Func<string, bool> checker)
+        private static string GetData(string preMessage, Func<string, bool> checker)
         {
             bool isDataCorrect = true;
             string input;
@@ -36,25 +36,25 @@ namespace MyHomeworkToolkit
         #region Digit Input
 
         public static int GetIntData(string preMessage, Func<string, bool> checker) =>
-            (int)GetData(preMessage, checker);
+            Int32.Parse(GetData(preMessage, checker));
 
         public static double GetDoubleData(string preMessage, Func<string, bool> checker) =>
-            (double)GetData(preMessage, checker);
+            Double.Parse(GetData(preMessage, checker));
 
         public static decimal GetDecimalData(string preMessage, Func<string, bool> checker) =>
-            (decimal)GetData(preMessage, checker);
+            Decimal.Parse(GetData(preMessage, checker));
 
         #endregion
 
         #region Default Checkers
-        private static bool PrintError(string message)
+        public static bool PrintError(string message)
         {
             ConsoleUtility.WriteLineColored(message, ConsoleColor.Red);
             Console.WriteLine();
             return false;
         }
 
-        private static bool NotEmptyStringChecker(string value)
+        public static bool NotEmptyStringChecker(string value)
         {
             if (string.IsNullOrEmpty(value))
                 return PrintError("Вводимая строка не должна быть пустой!");
@@ -62,7 +62,7 @@ namespace MyHomeworkToolkit
             return true;
         }
 
-        private static bool MoreThanZeroChecker(string value)
+        public static bool MoreThanZeroChecker(string value)
         {
             if (Int32.TryParse(value.Trim(), out int @int))
             {
