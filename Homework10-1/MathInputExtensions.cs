@@ -30,9 +30,25 @@ namespace Homework10_1
             foreach (char o in _operators)
             {
                 if (o == '(' || o == ')')
+                {
                     input = input.Replace(o.ToString(), string.Empty);
+                }
+                else if (o == '-')
+                {
+                    for (int i = 0; i < input.Length; i++)
+                    {
+                        if (input[i] == '-' && i == 0)
+                            continue;
+                        else if (input[i] == '-' && input[i - 1] == ' ')
+                            continue;
+                        else if (input[i] == '-')
+                            input = input.Substring(0, i) + ' ' + input.Substring(i + 1);
+                    }
+                }
                 else
+                {
                     input = input.Replace(o, ' ');
+                }
             }
 
             return input;
