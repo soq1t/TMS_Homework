@@ -107,7 +107,7 @@ namespace Homework7_2
             if (string.IsNullOrEmpty(number))
             {
                 if (displayInfoMessages)
-                    ErrorHandler.ShowError("Введите номер карты!");
+                    ConsoleUtility.PrintError("Введите номер карты!");
                 return false;
             }
             else
@@ -119,7 +119,7 @@ namespace Homework7_2
                     if (!char.IsDigit(c))
                     {
                         if (displayInfoMessages)
-                            ErrorHandler.ShowError("Номер карты должен содержать только цифры!");
+                            ConsoleUtility.PrintError("Номер карты должен содержать только цифры!");
                         return false;
                     }
                 }
@@ -127,7 +127,7 @@ namespace Homework7_2
                 if (number.Length != 16)
                 {
                     if (displayInfoMessages)
-                        ErrorHandler.ShowError(
+                        ConsoleUtility.PrintError(
                             $"Номер карты должен состоять из 16 цифр (в указанном номере {number.Length} цифр)!"
                         );
                     return false;
@@ -193,7 +193,7 @@ namespace Homework7_2
             if (amount < 0)
             {
                 if (displayInfoMessages)
-                    ErrorHandler.ShowError("Количество не может быть отрицательным!");
+                    ConsoleUtility.PrintError("Количество не может быть отрицательным!");
 
                 return false;
             }
@@ -223,7 +223,7 @@ namespace Homework7_2
             if (amount < 0)
             {
                 if (displayInfoMessages)
-                    ErrorHandler.ShowError("Количество не может быть отрицательным!");
+                    ConsoleUtility.PrintError("Количество не может быть отрицательным!");
 
                 return false;
             }
@@ -232,7 +232,7 @@ namespace Homework7_2
                 if (_money - amount < _overdraft)
                 {
                     if (displayInfoMessages)
-                        ErrorHandler.ShowError(
+                        ConsoleUtility.PrintError(
                             $"Невозможно снять такую сумму со счёта! Остаток ({_money - amount}) превысит допустимую сумму овердрафта ({_overdraft})"
                         );
                     return false;
@@ -266,11 +266,11 @@ namespace Homework7_2
 
                 if (!isSucceed)
                 {
-                    ErrorHandler.ShowError("Неверное значение!");
+                    ConsoleUtility.PrintError("Неверное значение!");
                 }
                 else if (amount < 0)
                 {
-                    ErrorHandler.ShowError("Значение должно быть положительным!");
+                    ConsoleUtility.PrintError("Значение должно быть положительным!");
                     isSucceed = false;
                 }
             } while (!isSucceed);
