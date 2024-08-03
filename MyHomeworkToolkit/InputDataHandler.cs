@@ -25,6 +25,9 @@ namespace MyHomeworkToolkit
             return input;
         }
 
+        private static string GetData(string preMessage) =>
+            GetData(preMessage, NotEmptyStringChecker);
+
         #region Text Input
         public static string? GetTextData(string preMessage, Func<string, bool> checker) =>
             GetData(preMessage, checker) as string;
@@ -34,7 +37,6 @@ namespace MyHomeworkToolkit
         #endregion
 
         #region Digit Input
-
         public static int GetIntData(string preMessage, Func<string, bool> checker)
         {
             int @int;
@@ -53,6 +55,9 @@ namespace MyHomeworkToolkit
 
             return @int;
         }
+
+        public static int GetIntData(string preMessage) =>
+            GetIntData(preMessage, NotEmptyStringChecker);
 
         public static double GetDoubleData(string preMessage, Func<string, bool> checker)
         {
@@ -73,6 +78,9 @@ namespace MyHomeworkToolkit
             return @double;
         }
 
+        public static double GetDoubleData(string preMessage) =>
+            GetDoubleData(preMessage, NotEmptyStringChecker);
+
         public static decimal GetDecimalData(string preMessage, Func<string, bool> checker)
         {
             decimal @decimal;
@@ -92,6 +100,8 @@ namespace MyHomeworkToolkit
             return @decimal;
         }
 
+        public static decimal GetDecimalData(string preMessage) =>
+            GetDecimalData(preMessage, NotEmptyStringChecker);
         #endregion
 
         #region Default Checkers
