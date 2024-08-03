@@ -45,14 +45,16 @@ namespace MyHomeworkToolkit
             {
                 isIntInput = Int32.TryParse(GetData(preMessage, checker), out @int);
 
-        public static double GetDoubleData(string preMessage, Func<string, bool> checker) =>
-            Double.Parse(GetData(preMessage, checker));
+                if (!isIntInput)
+                    ConsoleUtility.WriteLineColored(
+                        new Colored("Входные данные должны быть числом типа ", ConsoleColor.Red),
+                        new Colored("[int]", ConsoleColor.Yellow),
+                        new Colored(" !", ConsoleColor.Red)
+                    );
+            } while (!isIntInput);
 
-        public static decimal GetDecimalData(string preMessage, Func<string, bool> checker) =>
-            Decimal.Parse(GetData(preMessage, checker));
-
-        public static int GetIntData(string preMessage) =>
-            GetIntData(preMessage, NotEmptyStringChecker);
+            return @int;
+        }
 
         public static int GetIntData(string preMessage) =>
             GetIntData(preMessage, NotEmptyStringChecker);
@@ -167,33 +169,6 @@ namespace MyHomeworkToolkit
             }
         }
 
-        public static bool DigitChecker(string value, Type type)
-        {
-            bool result = false;
-
-            if (type is int)
-            {
-                result = Int32.TryParse(value.Trim(), out int @int);
-            }
-            if (type is double)
-            {
-                result = double.TryParse(value.Trim(), out double @double);
-            }
-            if (type is decimal)
-            {
-                result = decimal.TryParse(value.Trim(), out decimal @decimal);
-            }
-
-            if (result)
-            {
-                return true;
-            }
-            else
-            {
-                PrintError($"Заданное значение не является числом с типом {type}!");
-                return false;
-            }
-        }
         #endregion
     }
 }
