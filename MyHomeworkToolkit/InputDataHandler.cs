@@ -47,17 +47,21 @@ namespace MyHomeworkToolkit
         #endregion
 
         #region Default Checkers
-        public static bool PrintError(string message)
+
+
+        public static void PrintError(string message)
         {
             ConsoleUtility.WriteLineColored(message, ConsoleColor.Red);
             Console.WriteLine();
-            return false;
         }
 
         public static bool NotEmptyStringChecker(string value)
         {
             if (string.IsNullOrEmpty(value))
-                return PrintError("Вводимая строка не должна быть пустой!");
+            {
+                PrintError("Вводимая строка не должна быть пустой!");
+                return false;
+            }
 
             return true;
         }
@@ -67,26 +71,72 @@ namespace MyHomeworkToolkit
             if (Int32.TryParse(value.Trim(), out int @int))
             {
                 if (@int < 0)
-                    return PrintError("Значение не может быть отрицательным!");
+                {
+                    PrintError("Значение не может быть отрицательным!");
+                    return false;
+                }
                 else
+                {
                     return true;
+                }
             }
             else if (double.TryParse(value.Trim(), out double @double))
             {
                 if (@double < 0)
-                    return PrintError("Значение не может быть отрицательным!");
+                {
+                    PrintError("Значение не может быть отрицательным!");
+                    return false;
+                }
                 else
+                {
                     return true;
+                }
             }
             else if (decimal.TryParse(value.Trim(), out decimal @decimal))
             {
                 if (@decimal < 0)
-                    return PrintError("Значение не может быть отрицательным!");
+                {
+                    PrintError("Значение не может быть отрицательным!");
+                    return false;
+                }
                 else
+                {
                     return true;
+                }
             }
             else
-                return PrintError("Входящее значение должно быть числом!");
+            {
+                PrintError("Входящее значение должно быть числом!");
+                return false;
+            }
+        }
+
+        public static bool DigitChecker(string value, Type type)
+        {
+            bool result = false;
+
+            if (type is int)
+            {
+                result = Int32.TryParse(value.Trim(), out int @int);
+            }
+            if (type is double)
+            {
+                result = double.TryParse(value.Trim(), out double @double);
+            }
+            if (type is decimal)
+            {
+                result = decimal.TryParse(value.Trim(), out decimal @decimal);
+            }
+
+            if (result)
+            {
+                return true;
+            }
+            else
+            {
+                PrintError($"Заданное значение не является числом с типом {type}!");
+                return false;
+            }
         }
         #endregion
     }
