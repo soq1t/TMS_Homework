@@ -54,6 +54,9 @@ namespace MyHomeworkToolkit
         public static int GetIntData(string preMessage) =>
             GetIntData(preMessage, NotEmptyStringChecker);
 
+        public static int GetIntData(string preMessage) =>
+            GetIntData(preMessage, NotEmptyStringChecker);
+
         public static double GetDoubleData(string preMessage, Func<string, bool> checker)
         {
             double @double;
