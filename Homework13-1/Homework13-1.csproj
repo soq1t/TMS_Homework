@@ -8,4 +8,22 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="input\Super hero squad.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="input\Super hero squad.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyHomeworkToolkit\MyHomeworkToolkit.csproj" />
+  </ItemGroup>
+
 </Project>
