@@ -22,6 +22,8 @@ namespace Homework11_1
 
         private static void ComparePairs()
         {
+            PrintPairs();
+            Console.WriteLine();
             if (_pairs[0] == null || _pairs[1] == null)
             {
                 ConsoleUtility.PrintError(
@@ -68,7 +70,6 @@ namespace Homework11_1
                 new Colored(valueU, ConsoleColor.Green),
                 new Colored(".")
             );
-            ConsoleUtility.PressToContinue();
         }
 
         static void Main(string[] args)
@@ -77,6 +78,12 @@ namespace Homework11_1
         }
 
         private static void PrintMessage()
+        {
+            PrintPairs();
+            ConsoleUtility.WriteLineColored("Выберите следующее действие:");
+        }
+
+        private static void PrintPairs()
         {
             for (int i = 0; i < _pairs.Length; i++)
             {
@@ -100,8 +107,6 @@ namespace Homework11_1
 
                 Console.WriteLine();
             }
-
-            ConsoleUtility.WriteLineColored("Выберите следующее действие:");
         }
     }
 }
