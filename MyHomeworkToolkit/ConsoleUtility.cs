@@ -76,7 +76,8 @@ namespace MyHomeworkToolkit
             string message,
             ConsoleColor errorColor = ConsoleColor.Red,
             bool clearBefore = false,
-            bool clearAfter = false
+            bool clearAfter = false,
+            bool pressToContinue = false
         )
         {
             if (clearBefore)
@@ -87,7 +88,8 @@ namespace MyHomeworkToolkit
             else
                 WriteLineColored(message, errorColor);
 
-            PressToContinue(errorColor);
+            if (pressToContinue)
+                PressToContinue(errorColor);
 
             if (clearAfter)
                 Console.Clear();
