@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Homework16_1.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("product")]
     public class InventoryInfoController : ControllerBase
     {
         private readonly IInventoryService _inventory;
@@ -14,16 +14,16 @@ namespace Homework16_1.Controllers
             _inventory = inventory;
         }
 
-        [HttpGet("GetAmount")]
-        public int GetAmount()
+        [HttpGet("amount")]
+        public IActionResult GetAmount()
         {
-            return _inventory.GetProductAmount();
+            return Ok(_inventory.GetProductAmount());
         }
 
-        [HttpGet("GetAmountByCategory")]
-        public int GetAmountByCategory(string category)
+        [HttpGet("amount/{category}")]
+        public IActionResult GetAmountByCategory(string category)
         {
-            return _inventory.GetProductAmount(category);
+            return Ok(_inventory.GetProductAmount(category));
         }
     }
 }

@@ -8,7 +8,13 @@
 
         public bool RemoveProduct(Product product);
 
-        public bool EditProduct(int editedProductId, Product product);
+        public bool EditProduct(
+            int id,
+            string? productName = null,
+            string? category = null,
+            int? amount = null,
+            decimal? price = null
+        );
 
         public int GetProductAmount();
 
@@ -74,12 +80,18 @@
             }
         }
 
-        public bool EditProduct(int editedProductId, Product product)
+        public bool EditProduct(
+            int id,
+            string? productName = null,
+            string? category = null,
+            int? amount = null,
+            decimal? price = null
+        )
         {
-            Product? editedProduct = Products.FirstOrDefault(p => p.Id == editedProductId);
+            Product? editedProduct = Products.FirstOrDefault(p => p.Id == id);
             if (editedProduct != null)
             {
-                editedProduct.Update(product);
+                editedProduct.Update(productName, category, amount, price);
                 return true;
             }
             else

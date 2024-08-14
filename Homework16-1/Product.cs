@@ -12,12 +12,17 @@
 
         public decimal Price { get; set; }
 
-        public void Update(Product product)
+        public void Update(
+            string? productName = null,
+            string? category = null,
+            int? amount = null,
+            decimal? price = null
+        )
         {
-            Name = product.Name;
-            Category = product.Category;
-            Amount = product.Amount;
-            Price = product.Price;
+            Name = productName ?? Name;
+            Category = category ?? Category;
+            Amount = amount ?? Amount;
+            Price = price ?? Price;
         }
     }
 }
