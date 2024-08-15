@@ -1,0 +1,19 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Product
+
+@{
+    
+    <form action="api/products/@Model.Id/delete" method="post">
+        <div class="flex-container">
+            <h5>@Model.Name</h5>
+            <p>Стоимость: <b>@Model.Price</b></p>
+            <p>Количество на складе: <b>@Model.Amount</b></p>
+            <div>
+                <button class="btn-secondary" type="submit">Remove</button>
+            </div>
+        </div>
+    </form>
+    
+}

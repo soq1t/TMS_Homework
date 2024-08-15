@@ -74,11 +74,13 @@ namespace Homework17_1.API
             }
         }
 
-        [HttpDelete]
+        [HttpPost]
         [Route("{id}/delete")]
         public async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
             InventoryServiceCode code = await _inventoryService.DeleteAsync(id);
+
+            var request = HttpContext.Request;
 
             if (code == InventoryServiceCode.ProductNotExists)
             {
@@ -86,7 +88,7 @@ namespace Homework17_1.API
             }
             else
             {
-                return Ok($"Товар с id = {id} был удалён");
+                return RedirectToAction("Index", "Home");
             }
         }
     }
