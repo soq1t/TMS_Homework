@@ -1,3 +1,4 @@
+using Homework16_1.Services;
 
 namespace Homework16_1
 {
@@ -14,6 +15,8 @@ namespace Homework16_1
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddSingleton<IInventoryService, InventoryService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -26,7 +29,6 @@ namespace Homework16_1
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
