@@ -22,7 +22,9 @@ namespace Homework17_1.Controllers
             return View(products);
         }
 
-        public IActionResult Privacy()
+        [HttpGet]
+        [Route("add")]
+        public IActionResult Add()
         {
             return View();
         }

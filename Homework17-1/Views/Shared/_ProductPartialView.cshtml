@@ -3,17 +3,20 @@
 *@
 @model Product
 
-@{
+@{   
     
-    <form action="api/products/@Model.Id/delete" method="post">
-        <div class="flex-container">
+        <div class="flex-column">
             <h5>@Model.Name</h5>
-            <p>Стоимость: <b>@Model.Price</b></p>
-            <p>Количество на складе: <b>@Model.Amount</b></p>
-            <div>
-                <button class="btn-secondary" type="submit">Remove</button>
+            <p>Стоимость: <b>@Model.Price</b>, Количество на складе: <b>@Model.Amount</b></p>            
+            <div class="flex-">
+            <form action="/product/@Model.Id/modify" method="get">
+                <button class="btn-primary" type="submit">Редактировать товар</button>
+            </form>            
+            @using (Html.BeginForm("remove", "product", Model, FormMethod.Post))
+            {
+                <button class="btn-danger" type="submit">Удалить товар</button>
+            }
             </div>
-        </div>
-    </form>
+        </div>    
     
 }

@@ -80,15 +80,13 @@ namespace Homework17_1.API
         {
             InventoryServiceCode code = await _inventoryService.DeleteAsync(id);
 
-            var request = HttpContext.Request;
-
             if (code == InventoryServiceCode.ProductNotExists)
             {
                 return BadRequest($"Нет товара с id = {id}");
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return Ok("Товар успешно удалён!");
             }
         }
     }

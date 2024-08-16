@@ -34,12 +34,13 @@ namespace Homework17_1.Services
             {
                 return InventoryServiceCode.ProductAlreadyExists;
             }
-            else if (products.Any(p => p.Id == product.Id))
-            {
-                return InventoryServiceCode.SameIdProductExists;
-            }
+            //else if (products.Any(p => p.Id == product.Id))
+            //{
+            //    return InventoryServiceCode.SameIdProductExists;
+            //}
             else
             {
+                product.Id = (products.Count == 0) ? 1 : products.Last().Id + 1;
                 products.Add(product);
                 await SaveProducts(products);
                 return InventoryServiceCode.Ok;
