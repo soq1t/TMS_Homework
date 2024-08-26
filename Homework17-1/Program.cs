@@ -1,3 +1,4 @@
+using Homework17_1.Filter;
 using Homework17_1.Middlewares;
 using Homework17_1.Services;
 
@@ -10,7 +11,10 @@ namespace Homework17_1
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(new RequestTimeFilter());
+            });
             builder.Services.AddSingleton<IInventoryService, InventoryService>();
             var app = builder.Build();
 
