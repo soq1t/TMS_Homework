@@ -1,9 +1,16 @@
 [
   {
-    "Id": 2,
-    "Name": "Google Pixel 5",
+    "Id": 3,
+    "Name": "Pixel 6",
+    "Category": "Теника",
+    "Amount": 800,
+    "Price": 1000.0
+  },
+  {
+    "Id": 4,
+    "Name": "Iphone 15",
     "Category": "Техника",
-    "Amount": 964,
-    "Price": 0.0
+    "Amount": 1000,
+    "Price": 1500.0
   }
 ]

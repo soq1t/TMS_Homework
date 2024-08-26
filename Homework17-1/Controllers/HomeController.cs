@@ -18,7 +18,7 @@ namespace Homework17_1.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<Product> products = await _inventoryService.GetAllAsync();
+            List<Product> products = await _inventoryService.GetProductsAsync();
             return View(products);
         }
 
