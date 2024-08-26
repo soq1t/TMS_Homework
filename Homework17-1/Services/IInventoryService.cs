@@ -78,6 +78,7 @@ namespace Homework17_1.Services
 
         public async Task<InventoryServiceCode> ModifyAsync(int id, Product newValues)
         {
+            throw new Exception("test exception");
             List<Product> products = await GetProducts();
 
             Product? product = products.FirstOrDefault(p => p.Id == id);

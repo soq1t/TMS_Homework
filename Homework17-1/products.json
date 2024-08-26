@@ -5,5 +5,12 @@
     "Category": "Техника",
     "Amount": 964,
     "Price": 0.0
+  },
+  {
+    "Id": 3,
+    "Name": "asd",
+    "Category": "asd",
+    "Amount": 1,
+    "Price": 1.0
   }
 ]

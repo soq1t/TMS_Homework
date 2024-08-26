@@ -1,3 +1,4 @@
+using Homework17_1.Middlewares;
 using Homework17_1.Services;
 
 namespace Homework17_1
@@ -11,7 +12,6 @@ namespace Homework17_1
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddSingleton<IInventoryService, InventoryService>();
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -22,6 +22,7 @@ namespace Homework17_1
                 app.UseHsts();
             }
 
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
