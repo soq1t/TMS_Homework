@@ -1,4 +1,5 @@
 ﻿using Homework17_1.Models;
+using Homework17_1.Repositories;
 using Homework17_1.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,14 +20,14 @@ namespace Homework17_1.API
         [Route("all")]
         public async Task<IActionResult> GetAllAsync()
         {
-            return Json(await _inventoryService.GetAllAsync());
+            return Json(await _inventoryService.GetProductsAsync());
         }
 
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetAsync([FromRoute] int id)
         {
-            Product? product = await _inventoryService.GetAsync(id);
+            Product? product = await _inventoryService.GetProductAsync(id);
 
             if (product == null)
             {
@@ -42,13 +43,13 @@ namespace Homework17_1.API
         [Route("add")]
         public async Task<IActionResult> AddAsync(Product product)
         {
-            InventoryServiceCode code = await _inventoryService.AddAsync(product);
+            InventoryRepositoryCode code = await _inventoryService.AddProductAsync(product);
 
-            if (code == InventoryServiceCode.ProductAlreadyExists)
+            if (code == InventoryRepositoryCode.ProductAlreadyExists)
             {
                 return BadRequest($"Такой товар уже есть на складе");
             }
-            else if (code == InventoryServiceCode.SameIdProductExists)
+            else if (code == InventoryRepositoryCode.SameIdProductExists)
             {
                 return BadRequest($"Товар с id = {product.Id} уже есть на складе");
             }
@@ -62,9 +63,12 @@ namespace Homework17_1.API
         [Route("{id}/modify")]
         public async Task<IActionResult> ModifyAsync([FromRoute] int id, Product newValues)
         {
-            InventoryServiceCode code = await _inventoryService.ModifyAsync(id, newValues);
+            InventoryRepositoryCode code = await _inventoryService.ModifyProductAsync(
+                id,
+                newValues
+            );
 
-            if (code == InventoryServiceCode.ProductNotExists)
+            if (code == InventoryRepositoryCode.ProductNotExists)
             {
                 return BadRequest($"Товара с id = {id} нет на складе");
             }
@@ -78,9 +82,9 @@ namespace Homework17_1.API
         [Route("{id}/delete")]
         public async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
-            InventoryServiceCode code = await _inventoryService.DeleteAsync(id);
+            InventoryRepositoryCode code = await _inventoryService.DeleteProductAsync(id);
 
-            if (code == InventoryServiceCode.ProductNotExists)
+            if (code == InventoryRepositoryCode.ProductNotExists)
             {
                 return BadRequest($"Нет товара с id = {id}");
             }

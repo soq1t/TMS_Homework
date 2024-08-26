@@ -1,5 +1,6 @@
 using Homework17_1.Filter;
 using Homework17_1.Middlewares;
+using Homework17_1.Repositories;
 using Homework17_1.Services;
 
 namespace Homework17_1
@@ -15,7 +16,8 @@ namespace Homework17_1
             {
                 options.Filters.Add(new RequestTimeFilter());
             });
-            builder.Services.AddSingleton<IInventoryService, InventoryService>();
+            builder.Services.AddTransient<IInventoryService, InventoryService>();
+            builder.Services.AddSingleton<IInvetoryRepository, FileRepository>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

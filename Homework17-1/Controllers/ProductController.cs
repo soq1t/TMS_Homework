@@ -26,8 +26,8 @@ namespace Homework17_1.Controllers
         [Route("add")]
         public async Task<IActionResult> Add([FromForm] Product product)
         {
-            await _inventoryService.AddAsync(product);
-            List<Product> products = await _inventoryService.GetAllAsync();
+            await _inventoryService.AddProductAsync(product);
+            List<Product> products = await _inventoryService.GetProductsAsync();
 
             return RedirectToAction("Index", "Home");
         }
@@ -36,7 +36,7 @@ namespace Homework17_1.Controllers
         [Route("remove")]
         public async Task<IActionResult> Remove(Product product)
         {
-            await _inventoryService.DeleteAsync(product.Id);
+            await _inventoryService.DeleteProductAsync(product.Id);
 
             return RedirectToAction("Index", "Home");
         }
@@ -45,7 +45,7 @@ namespace Homework17_1.Controllers
         [Route("{id}/modify")]
         public async Task<IActionResult> Modify([FromRoute] int id)
         {
-            Product? product = await _inventoryService.GetAsync(id);
+            Product? product = await _inventoryService.GetProductAsync(id);
 
             if (product == null)
             {
@@ -61,7 +61,7 @@ namespace Homework17_1.Controllers
         [Route("modify")]
         public async Task<IActionResult> Modify([FromForm] Product product)
         {
-            await _inventoryService.ModifyAsync(product.Id, product);
+            await _inventoryService.ModifyProductAsync(product.Id, product);
 
             return RedirectToAction("Index", "Home");
         }

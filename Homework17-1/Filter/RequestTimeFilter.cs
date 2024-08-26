@@ -14,7 +14,6 @@ namespace Homework17_1.Filter
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            Thread.Sleep(3000);
             _stopwatch.Stop();
 
             context.HttpContext.Response.Headers.Add(
