@@ -1,24 +1,30 @@
-using Homework17_1.Models;
-using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Homework17_1.Models;
+using Homework17_1.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Homework17_1.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IInventoryService _inventoryService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IInventoryService inventoryService)
         {
             _logger = logger;
+            _inventoryService = inventoryService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<Product> products = await _inventoryService.GetAllAsync();
+            return View(products);
         }
 
-        public IActionResult Privacy()
+        [HttpGet]
+        [Route("add")]
+        public IActionResult Add()
         {
             return View();
         }
@@ -26,7 +32,12 @@ namespace Homework17_1.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(
+                new ErrorViewModel
+                {
+                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+                }
+            );
         }
     }
 }

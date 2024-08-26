@@ -1,3 +1,5 @@
+using Homework17_1.Services;
+
 namespace Homework17_1
 {
     public class Program
@@ -8,6 +10,7 @@ namespace Homework17_1
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddSingleton<IInventoryService, InventoryService>();
 
             var app = builder.Build();
 
@@ -28,7 +31,8 @@ namespace Homework17_1
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}"
+            );
 
             app.Run();
         }

@@ -1,0 +1,69 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Product
+@{
+    string actionName;
+    string buttonText;
+
+    if (Model == null)
+    {
+        ViewData["Title"] = "Добавление товара";
+        actionName = "add";
+        buttonText = "Добавить товар";
+    } else
+    {
+        ViewData["Title"] = "Редактирование товара";
+        actionName = "modify";
+        buttonText = "Изменить товар";
+
+    }
+
+}
+
+<div class="content">
+    @using (Html.BeginForm(actionName, "product", FormMethod.Post))
+    {
+        <input hidden name="Id" value="@Model?.Id" />
+        <table class="table-primary">
+            <tr>
+                <th>
+                    <label class="form-label">Наименование товара:</label>
+                </th>
+                <th>
+                    <input type="text" class="form-text" name="Name" value="@Model?.Name" />
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <label class="form-label">Категория:</label>
+                </th>
+                <th>
+                    <input type="text" class="form-text" name="Category" value="@Model?.Category" />
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <label class="form-label">Количество:</label>
+                </th>
+                <th>
+                    <input type="number" class="form-text" name="Amount" value="@Model?.Amount" />
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <label class="form-label">Стоимость:</label>
+                </th>
+                <th>
+                    <input type="text" class="form-text" name="Price" value="@Model?.Price" />
+                </th>
+            </tr>
+        </table>
+        <button type="submit" class="btn-success">@buttonText</button>
+    }   
+    
+</div>
+
+    
+
+
